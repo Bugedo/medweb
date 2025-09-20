@@ -8,7 +8,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate": "./scripts/apply-migration.sh",
+    "db:connect": "psql \"postgresql://postgres.$PROJECT_REF:$DB_PASSWORD@aws-1-sa-east-1.pooler.supabase.com:6543/postgres\""
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
   },
   "homepage": "https://github.com/CaimanBrujo/template-next.js#readme",
   "dependencies": {
+    "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.51.0",
     "next": "^15.3.5",
     "react": "^19.1.0",

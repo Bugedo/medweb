@@ -36,6 +36,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Supabase config files with sensitive data
+scripts/config.sh
+
 # local env files
 .env*.local
 .env
