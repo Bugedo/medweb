@@ -97,6 +97,14 @@ export default function PrefichaForm() {
     }));
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target;
     setFormData((prev) => ({
@@ -189,7 +197,7 @@ export default function PrefichaForm() {
                   <select
                     name="vendedor"
                     value={formData.vendedor}
-                    onChange={handleInputChange}
+                    onChange={handleSelectChange}
                     required
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >

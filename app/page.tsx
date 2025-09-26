@@ -193,6 +193,7 @@ export default function LandingPage() {
                   <div className="hero-decorative-blob hero-decorative-blob-4"></div>
 
                   {/* Imagen principal con transición */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     key={`image-${currentSlide}`}
                     src={heroSlides[currentSlide].image}
@@ -353,7 +354,7 @@ export default function LandingPage() {
                     </span>
                   ))}
                 </div>
-                <p className="text-sky-500 mb-4 italic">"{testimonial.content}"</p>
+                <p className="text-sky-500 mb-4 italic">&ldquo;{testimonial.content}&rdquo;</p>
                 <div>
                   <p className="font-semibold text-sky-600">{testimonial.name}</p>
                   <p className="text-sky-500 text-sm">{testimonial.role}</p>
