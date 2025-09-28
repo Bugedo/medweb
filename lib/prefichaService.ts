@@ -36,7 +36,7 @@ export async function savePreficha(data: PrefichaData) {
   try {
     // Si es un vendedor temporal, guardar el nombre en lugar del ID
     let vendedorName = data.vendedor;
-    let vendorId = null;
+    let vendorId: string | null = null;
 
     if (data.vendedor.startsWith('temp-')) {
       const tempVendors = [
