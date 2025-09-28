@@ -10,7 +10,7 @@ export default function Header() {
           <div className="flex-shrink-0">
             <Image
               src="/images/prepagaargentina.png"
-              alt="Prepaga Argentina"
+              alt="Prepaga Argentina - Cobertura Médica Premium Sin Carencias"
               width={200}
               height={80}
               className="h-12 md:h-20 w-auto header-logo"
@@ -22,7 +22,7 @@ export default function Header() {
           <div className="flex-shrink-0">
             <Image
               src="/images/sancor.png"
-              alt="Sancor Salud"
+              alt="Sancor Salud - Red Médica Nacional"
               width={120}
               height={64}
               className="h-6 md:h-16 w-auto header-logo"

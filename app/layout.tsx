@@ -3,9 +3,69 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'Prepaga Argentina',
+  title: {
+    default: 'Prepaga Argentina - Cobertura Médica Premium Sin Carencias',
+    template: '%s | Prepaga Argentina'
+  },
   description:
-    'La mejor cobertura médica para tu familia. Sin carencias, atención 24/7 en todo el país.',
+    'Prepaga Argentina ofrece la mejor cobertura médica para familias y empresas. Sin carencias, atención 24/7, más de 200.000 profesionales. Planes empresariales y familiares.',
+  keywords: [
+    'prepaga argentina',
+    'cobertura médica',
+    'plan médico',
+    'seguro médico',
+    'atención médica 24/7',
+    'planes empresariales',
+    'cobertura familiar',
+    'sin carencias',
+    'red médica',
+    'emergencias médicas'
+  ],
+  authors: [{ name: 'Prepaga Argentina' }],
+  creator: 'Prepaga Argentina',
+  publisher: 'Prepaga Argentina',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://prepagaargentina.com'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'es_AR',
+    url: 'https://prepagaargentina.com',
+    title: 'Prepaga Argentina - Cobertura Médica Premium Sin Carencias',
+    description: 'La mejor cobertura médica para tu familia. Sin carencias, atención 24/7 en todo el país.',
+    siteName: 'Prepaga Argentina',
+    images: [
+      {
+        url: '/images/hero/hero3.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Prepaga Argentina - Cobertura Médica Familiar',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Prepaga Argentina - Cobertura Médica Premium',
+    description: 'La mejor cobertura médica para tu familia. Sin carencias, atención 24/7.',
+    images: ['/images/hero/hero3.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -39,6 +99,49 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#0ea5e9" />
         <meta name="msapplication-TileColor" content="#0ea5e9" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Prepaga Argentina",
+              "description": "Cobertura médica premium para familias y empresas. Sin carencias, atención 24/7.",
+              "url": "https://prepagaargentina.com",
+              "logo": "https://prepagaargentina.com/images/prepagaargentina.png",
+              "image": "https://prepagaargentina.com/images/hero/hero3.jpg",
+              "telephone": "+54-11-1234-5678",
+              "email": "info@prepagaargentina.com",
+              "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "AR",
+                "addressLocality": "Buenos Aires"
+              },
+              "sameAs": [
+                "https://www.facebook.com/prepagaargentina",
+                "https://www.instagram.com/prepagaargentina",
+                "https://www.linkedin.com/company/prepagaargentina"
+              ],
+              "service": {
+                "@type": "Service",
+                "name": "Cobertura Médica",
+                "description": "Planes médicos para familias y empresas con cobertura nacional",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Prepaga Argentina"
+                },
+                "areaServed": "Argentina",
+                "availableChannel": {
+                  "@type": "ServiceChannel",
+                  "serviceUrl": "https://prepagaargentina.com",
+                  "serviceSmsNumber": "+54-11-1234-5678"
+                }
+              }
+            })
+          }}
+        />
       </head>
       <body className="page-background">
         {children}
