@@ -5,6 +5,7 @@ import { createBrowserClient } from '@supabase/ssr';
 import { useRouter } from 'next/navigation';
 import PrefichasTab from './components/PrefichasTab';
 import ContactosTab from './components/ContactosTab';
+import VendedoresTab from './components/VendedoresTab';
 
 export default function AdminPanel() {
   const router = useRouter();
@@ -113,9 +114,7 @@ export default function AdminPanel() {
           ) : activeTab === 'contactos' ? (
             <ContactosTab />
           ) : activeTab === 'vendedores' ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600">Gestión de vendedores - Próximamente</p>
-            </div>
+            <VendedoresTab supabase={supabase} />
           ) : null}
         </div>
       </main>
