@@ -20,10 +20,6 @@ export default function AdminPanel() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
-  useEffect(() => {
-    checkUser();
-  }, []);
-
   const checkUser = useCallback(async () => {
     const {
       data: { session },
@@ -35,6 +31,10 @@ export default function AdminPanel() {
     setUser(session.user);
     setLoading(false);
   }, [router, supabase]);
+
+  useEffect(() => {
+    checkUser();
+  }, [checkUser]);
 
   if (loading) {
     return (

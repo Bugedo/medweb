@@ -33,10 +33,6 @@ export default function VendedoresTab({ supabase }: VendedoresTabProps) {
     is_active: true,
   });
 
-  useEffect(() => {
-    loadVendors();
-  }, []);
-
   const loadVendors = useCallback(async () => {
     setLoading(true);
     try {
@@ -161,6 +157,10 @@ export default function VendedoresTab({ supabase }: VendedoresTabProps) {
       setLoading(false);
     }
   }, [supabase]);
+
+  useEffect(() => {
+    loadVendors();
+  }, [loadVendors]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -49,7 +49,7 @@ export async function savePreficha(data: PrefichaData) {
       const vendor = tempVendors.find((v) => v.id === data.vendedor);
       vendedorName = vendor ? vendor.name : data.vendedor;
     } else {
-      vendorId = data.vendedor;
+      vendorId = data.vendedor || null;
     }
 
     // Subir archivo si existe

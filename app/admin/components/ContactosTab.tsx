@@ -23,10 +23,6 @@ export default function ContactosTab({}: ContactosTabProps) {
   const [total, setTotal] = useState(0);
   const [updating, setUpdating] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadContactos();
-  }, [currentPage, search, statusFilter]);
-
   const loadContactos = useCallback(async () => {
     setContactosLoading(true);
     try {
@@ -44,6 +40,10 @@ export default function ContactosTab({}: ContactosTabProps) {
       setContactosLoading(false);
     }
   }, [currentPage, search, statusFilter]);
+
+  useEffect(() => {
+    loadContactos();
+  }, [loadContactos]);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     setUpdating(id);

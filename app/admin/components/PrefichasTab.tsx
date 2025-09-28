@@ -59,10 +59,6 @@ export default function PrefichasTab({ supabase }: PrefichasTabProps) {
   const [prefichaStatusFilter, setPrefichaStatusFilter] = useState('all');
   const [updatingPreficha, setUpdatingPreficha] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadPrefichas();
-  }, []);
-
   const loadPrefichas = useCallback(async () => {
     try {
       console.log('🔄 Cargando prefichas desde la DB...');
@@ -164,6 +160,10 @@ export default function PrefichasTab({ supabase }: PrefichasTabProps) {
       setUpdatingPreficha(null);
     }
   };
+
+  useEffect(() => {
+    loadPrefichas();
+  }, [loadPrefichas]);
 
   const handleToggleDetails = (prefichaId: string, preficha: Preficha) => {
     if (expandedPreficha === prefichaId) {
