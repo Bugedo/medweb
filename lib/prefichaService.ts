@@ -34,23 +34,10 @@ export interface PrefichaData {
 
 export async function savePreficha(data: PrefichaData) {
   try {
-    // 1. Crear la preficha principal con vendor_id (si no es temporal)
-    const insertData: any = {};
-    if (!data.vendedor.startsWith('temp-')) {
-      insertData.vendor_id = data.vendedor;
-    }
-
-    const { data: preficha, error: prefichaError } = await supabase
-      .from('prefichas')
-      .insert(insertData)
-      .select()
-      .single();
-
-    if (prefichaError) throw prefichaError;
-
-    // 2. Guardar datos del cliente
     // Si es un vendedor temporal, guardar el nombre en lugar del ID
     let vendedorName = data.vendedor;
+    let vendorId = null;
+
     if (data.vendedor.startsWith('temp-')) {
       const tempVendors = [
         { id: 'temp-1', name: 'Juan Pérez' },
@@ -61,54 +48,15 @@ export async function savePreficha(data: PrefichaData) {
       ];
       const vendor = tempVendors.find((v) => v.id === data.vendedor);
       vendedorName = vendor ? vendor.name : data.vendedor;
+    } else {
+      vendorId = data.vendedor;
     }
 
-    const { error: clienteError } = await supabase.from('datos_cliente').insert({
-      preficha_id: preficha.id,
-      vendedor: vendedorName,
-      nombre_cliente: data.nombreCliente,
-      apellido_cliente: data.apellidoCliente,
-      email: data.email,
-      dni: data.dni,
-      numero_celular: data.numeroCelular,
-      vigencia_cobertura: data.vigenciaCobertura,
-    });
-
-    if (clienteError) throw clienteError;
-
-    // 3. Guardar beneficiario del seguro de vida (si existe)
-    if (
-      data.beneficiarioApellidoNombres ||
-      data.beneficiarioDni ||
-      data.beneficiarioFechaNacimiento
-    ) {
-      const { error: beneficiarioError } = await supabase.from('beneficiario_seguro_vida').insert({
-        preficha_id: preficha.id,
-        apellido_nombres: data.beneficiarioApellidoNombres,
-        dni: data.beneficiarioDni,
-        fecha_nacimiento: data.beneficiarioFechaNacimiento,
-      });
-
-      if (beneficiarioError) throw beneficiarioError;
-    }
-
-    // 4. Guardar tercero pagador (si existe)
-    if (data.terceroApellidoNombres || data.terceroEmail || data.terceroNumeroCelular) {
-      const { error: terceroError } = await supabase.from('tercero_pagador').insert({
-        preficha_id: preficha.id,
-        apellido_nombres: data.terceroApellidoNombres,
-        email: data.terceroEmail,
-        numero_celular: data.terceroNumeroCelular,
-      });
-
-      if (terceroError) throw terceroError;
-    }
-
-    // 5. Subir archivo si existe
+    // Subir archivo si existe
     let archivoPath: string | null = null;
     if (data.archivoAdjunto) {
       const fileExt = data.archivoAdjunto.name.split('.').pop();
-      const fileName = `${preficha.id}.${fileExt}`;
+      const fileName = `preficha-${Date.now()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from('preficha-files')
@@ -119,21 +67,47 @@ export async function savePreficha(data: PrefichaData) {
       archivoPath = fileName;
     }
 
-    // 6. Guardar información adicional
-    const { error: infoError } = await supabase.from('informacion_adicional').insert({
-      preficha_id: preficha.id,
-      origen_dato: data.origenDato,
-      canal_afiliacion: data.canalAfiliacion,
-      plan: data.plan,
-      precio_lista: data.precioLista,
-      porcentaje_descuento: data.porcentajeDescuento,
-      cantidad_capitas: data.cantidadCapitas,
-      localidad_provincia: data.localidadProvincia,
-      observaciones: data.observaciones,
-      archivo_adjunto: archivoPath,
-    });
+    // Insertar todos los datos en una sola tabla unificada
+    const { data: preficha, error: prefichaError } = await supabase
+      .from('prefichas')
+      .insert({
+        vendor_id: vendorId,
+        status: 'pending',
 
-    if (infoError) throw infoError;
+        // Datos del cliente
+        vendedor: vendedorName,
+        nombre_cliente: data.nombreCliente,
+        apellido_cliente: data.apellidoCliente,
+        email: data.email,
+        dni: data.dni,
+        numero_celular: data.numeroCelular,
+        vigencia_cobertura: data.vigenciaCobertura,
+
+        // Beneficiario del seguro de vida
+        beneficiario_apellido_nombres: data.beneficiarioApellidoNombres,
+        beneficiario_dni: data.beneficiarioDni,
+        beneficiario_fecha_nacimiento: data.beneficiarioFechaNacimiento,
+
+        // Tercero pagador
+        tercero_apellido_nombres: data.terceroApellidoNombres,
+        tercero_email: data.terceroEmail,
+        tercero_numero_celular: data.terceroNumeroCelular,
+
+        // Información adicional
+        origen_dato: data.origenDato,
+        canal_afiliacion: data.canalAfiliacion,
+        plan: data.plan,
+        precio_lista: data.precioLista,
+        porcentaje_descuento: data.porcentajeDescuento,
+        cantidad_capitas: data.cantidadCapitas,
+        localidad_provincia: data.localidadProvincia,
+        observaciones: data.observaciones,
+        archivo_adjunto: archivoPath,
+      })
+      .select()
+      .single();
+
+    if (prefichaError) throw prefichaError;
 
     return { success: true, prefichaId: preficha.id };
   } catch (error: any) {
@@ -146,16 +120,7 @@ export async function getPrefichas() {
   try {
     const { data, error } = await supabase
       .from('prefichas')
-      .select(
-        `
-        *,
-        vendors(name, code),
-        datos_cliente(*),
-        beneficiario_seguro_vida(*),
-        tercero_pagador(*),
-        informacion_adicional(*)
-      `,
-      )
+      .select('*')
       .order('created_at', { ascending: false });
 
     if (error) throw error;

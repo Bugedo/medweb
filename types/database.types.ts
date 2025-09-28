@@ -14,200 +14,217 @@ export type Database = {
   }
   public: {
     Tables: {
-      beneficiario_seguro_vida: {
+      contactos: {
         Row: {
-          apellido_nombres: string | null
           created_at: string | null
-          dni: string | null
-          fecha_nacimiento: string | null
-          id: string
-          preficha_id: string | null
-        }
-        Insert: {
-          apellido_nombres?: string | null
-          created_at?: string | null
-          dni?: string | null
-          fecha_nacimiento?: string | null
-          id?: string
-          preficha_id?: string | null
-        }
-        Update: {
-          apellido_nombres?: string | null
-          created_at?: string | null
-          dni?: string | null
-          fecha_nacimiento?: string | null
-          id?: string
-          preficha_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "beneficiario_seguro_vida_preficha_id_fkey"
-            columns: ["preficha_id"]
-            isOneToOne: false
-            referencedRelation: "prefichas"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      datos_cliente: {
-        Row: {
-          apellido_cliente: string
-          created_at: string | null
-          dni: string | null
+          dni: string
           email: string
           id: string
-          nombre_cliente: string
-          numero_celular: string
-          preficha_id: string | null
-          vendedor: string
-          vigencia_cobertura: string
-        }
-        Insert: {
-          apellido_cliente: string
-          created_at?: string | null
-          dni?: string | null
-          email: string
-          id?: string
-          nombre_cliente: string
-          numero_celular: string
-          preficha_id?: string | null
-          vendedor: string
-          vigencia_cobertura: string
-        }
-        Update: {
-          apellido_cliente?: string
-          created_at?: string | null
-          dni?: string | null
-          email?: string
-          id?: string
-          nombre_cliente?: string
-          numero_celular?: string
-          preficha_id?: string | null
-          vendedor?: string
-          vigencia_cobertura?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "datos_cliente_preficha_id_fkey"
-            columns: ["preficha_id"]
-            isOneToOne: false
-            referencedRelation: "prefichas"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      informacion_adicional: {
-        Row: {
-          archivo_adjunto: string | null
-          canal_afiliacion: string[] | null
-          cantidad_capitas: string | null
-          created_at: string | null
-          id: string
-          localidad_provincia: string
-          observaciones: string | null
-          origen_dato: string[] | null
-          plan: string
-          porcentaje_descuento: string
-          precio_lista: string
-          preficha_id: string | null
-        }
-        Insert: {
-          archivo_adjunto?: string | null
-          canal_afiliacion?: string[] | null
-          cantidad_capitas?: string | null
-          created_at?: string | null
-          id?: string
-          localidad_provincia: string
-          observaciones?: string | null
-          origen_dato?: string[] | null
-          plan: string
-          porcentaje_descuento: string
-          precio_lista: string
-          preficha_id?: string | null
-        }
-        Update: {
-          archivo_adjunto?: string | null
-          canal_afiliacion?: string[] | null
-          cantidad_capitas?: string | null
-          created_at?: string | null
-          id?: string
-          localidad_provincia?: string
-          observaciones?: string | null
-          origen_dato?: string[] | null
-          plan?: string
-          porcentaje_descuento?: string
-          precio_lista?: string
-          preficha_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "informacion_adicional_preficha_id_fkey"
-            columns: ["preficha_id"]
-            isOneToOne: false
-            referencedRelation: "prefichas"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      prefichas: {
-        Row: {
-          created_at: string | null
-          id: string
+          localidad: string
+          nombre: string
+          status: string | null
+          telefono: string
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
+          dni: string
+          email: string
           id?: string
+          localidad: string
+          nombre: string
+          status?: string | null
+          telefono: string
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
+          dni?: string
+          email?: string
           id?: string
+          localidad?: string
+          nombre?: string
+          status?: string | null
+          telefono?: string
           updated_at?: string | null
         }
         Relationships: []
       }
-      tercero_pagador: {
+      prefichas: {
         Row: {
-          apellido_nombres: string | null
+          apellido_cliente: string | null
+          archivo_adjunto: string | null
+          beneficiario_apellido_nombres: string | null
+          beneficiario_dni: string | null
+          beneficiario_fecha_nacimiento: string | null
+          canal_afiliacion: string[] | null
+          cantidad_capitas: string | null
           created_at: string | null
+          dni: string | null
           email: string | null
           id: string
+          localidad_provincia: string | null
+          nombre_cliente: string | null
           numero_celular: string | null
-          preficha_id: string | null
+          observaciones: string | null
+          origen_dato: string[] | null
+          plan: string | null
+          porcentaje_descuento: string | null
+          precio_lista: string | null
+          status: string | null
+          tercero_apellido_nombres: string | null
+          tercero_email: string | null
+          tercero_numero_celular: string | null
+          updated_at: string | null
+          vendedor: string | null
+          vendor_id: string | null
+          vigencia_cobertura: string | null
         }
         Insert: {
-          apellido_nombres?: string | null
+          apellido_cliente?: string | null
+          archivo_adjunto?: string | null
+          beneficiario_apellido_nombres?: string | null
+          beneficiario_dni?: string | null
+          beneficiario_fecha_nacimiento?: string | null
+          canal_afiliacion?: string[] | null
+          cantidad_capitas?: string | null
           created_at?: string | null
+          dni?: string | null
           email?: string | null
           id?: string
+          localidad_provincia?: string | null
+          nombre_cliente?: string | null
           numero_celular?: string | null
-          preficha_id?: string | null
+          observaciones?: string | null
+          origen_dato?: string[] | null
+          plan?: string | null
+          porcentaje_descuento?: string | null
+          precio_lista?: string | null
+          status?: string | null
+          tercero_apellido_nombres?: string | null
+          tercero_email?: string | null
+          tercero_numero_celular?: string | null
+          updated_at?: string | null
+          vendedor?: string | null
+          vendor_id?: string | null
+          vigencia_cobertura?: string | null
         }
         Update: {
-          apellido_nombres?: string | null
+          apellido_cliente?: string | null
+          archivo_adjunto?: string | null
+          beneficiario_apellido_nombres?: string | null
+          beneficiario_dni?: string | null
+          beneficiario_fecha_nacimiento?: string | null
+          canal_afiliacion?: string[] | null
+          cantidad_capitas?: string | null
           created_at?: string | null
+          dni?: string | null
           email?: string | null
           id?: string
+          localidad_provincia?: string | null
+          nombre_cliente?: string | null
           numero_celular?: string | null
-          preficha_id?: string | null
+          observaciones?: string | null
+          origen_dato?: string[] | null
+          plan?: string | null
+          porcentaje_descuento?: string | null
+          precio_lista?: string | null
+          status?: string | null
+          tercero_apellido_nombres?: string | null
+          tercero_email?: string | null
+          tercero_numero_celular?: string | null
+          updated_at?: string | null
+          vendedor?: string | null
+          vendor_id?: string | null
+          vigencia_cobertura?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "tercero_pagador_preficha_id_fkey"
-            columns: ["preficha_id"]
+            foreignKeyName: "prefichas_unified_vendor_id_fkey"
+            columns: ["vendor_id"]
             isOneToOne: false
-            referencedRelation: "prefichas"
+            referencedRelation: "vendors"
             referencedColumns: ["id"]
           },
         ]
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          name: string | null
+          role: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          name?: string | null
+          role?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          name?: string | null
+          role?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      vendors: {
+        Row: {
+          code: string
+          created_at: string
+          email: string
+          id: string
+          is_active: boolean | null
+          name: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          email: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          email?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_admin_role: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      get_user_role: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
