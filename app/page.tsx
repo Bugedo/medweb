@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Users, Building2, Heart, Map, Trophy, Hospital, Shield, Smartphone } from 'lucide-react';
+import Header from './components/Header';
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -14,56 +16,24 @@ export default function LandingPage() {
       title: 'Cuidamos lo que más amás',
       subtitle: 'Tu familia merece la cobertura que mejor se adapta a vos',
       image: '/images/hero/hero1.jpg',
-      bgGradient: 'from-white to-white',
     },
     {
       id: 2,
       title: 'Protección 24/7',
       subtitle: 'Emergencias médicas cubiertas las 24 horas, todos los días',
       image: '/images/hero/hero2.jpg',
-      bgGradient: 'from-white to-white',
     },
     {
       id: 3,
       title: 'Sin Carencias',
       subtitle: 'Acceso inmediato a todos los servicios médicos',
       image: '/images/hero/hero3.jpg',
-      bgGradient: 'from-white to-white',
     },
     {
       id: 4,
       title: 'Cobertura Nacional',
       subtitle: 'Atención médica en todo el país con la red más amplia',
       image: '/images/hero/hero4.jpg',
-      bgGradient: 'from-white to-white',
-    },
-  ];
-
-  const benefits = [
-    {
-      icon: '🏥',
-      title: 'Cobertura Nacional',
-      description: 'Atención médica en todo el país con la red más amplia de prestadores',
-    },
-    {
-      icon: '⚡',
-      title: 'Sin Carencias',
-      description: 'Acceso inmediato a todos los servicios sin períodos de espera',
-    },
-    {
-      icon: '👨‍⚕️',
-      title: 'Médicos de Cabecera',
-      description: 'Atención personalizada con profesionales de confianza',
-    },
-    {
-      icon: '📱',
-      title: 'App Móvil',
-      description: 'Gestioná tu cobertura desde cualquier lugar, las 24 horas',
-    },
-    {
-      icon: '💰',
-      title: 'Precios Accesibles',
-      description: 'Planes flexibles que se adaptan a tu presupuesto familiar',
     },
   ];
 
@@ -149,43 +119,117 @@ export default function LandingPage() {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    setTimeout(() => setIsAnimating(false), 700);
+    setTimeout(() => setIsAnimating(false), 1500);
   };
 
   const prevSlide = () => {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
-    setTimeout(() => setIsAnimating(false), 700);
+    setTimeout(() => setIsAnimating(false), 1500);
   };
 
   const goToSlide = (index: number) => {
     if (isAnimating || index === currentSlide) return;
     setIsAnimating(true);
     setCurrentSlide(index);
-    setTimeout(() => setIsAnimating(false), 700);
+    setTimeout(() => setIsAnimating(false), 1500);
   };
 
   return (
     <div className="min-h-screen bg-white text-sky-600">
+      {/* Header */}
+      <Header />
+
       {/* Hero Section - Full Screen Carousel */}
-      <section className="relative h-screen overflow-hidden">
-        {/* Background Slides */}
-        {heroSlides.map((slide, index) => (
-          <div
-            key={slide.id}
-            className={`absolute inset-0 bg-gradient-to-br ${slide.bgGradient} transition-all duration-700 ease-in-out ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
-          ></div>
-        ))}
+      <section className="relative h-[calc(100vh-5rem)] overflow-hidden">
+        {/* Fixed Background */}
+        <div className="absolute inset-0 hero-background">
+          {/* Animated Background Elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="hero-bg-shape hero-bg-shape-1"></div>
+            <div className="hero-bg-shape hero-bg-shape-2"></div>
+            <div className="hero-bg-shape hero-bg-shape-3"></div>
+            <div className="hero-bg-shape hero-bg-shape-4"></div>
+            <div className="hero-bg-shape hero-bg-shape-5"></div>
+          </div>
+        </div>
 
         {/* Content */}
         <div className="relative h-full flex items-center justify-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="mb-8">
-              <div className="mb-6 flex justify-center">
-                <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Mobile Layout (centered) */}
+            <div className="block lg:hidden text-center">
+              <div className="mb-8">
+                <div className="mb-6 flex justify-center">
+                  <div className="relative w-64 h-64 md:w-80 md:h-80">
+                    {/* Elementos decorativos orgánicos en los vértices */}
+                    <div className="hero-decorative-blob hero-decorative-blob-1"></div>
+                    <div className="hero-decorative-blob hero-decorative-blob-2"></div>
+                    <div className="hero-decorative-blob hero-decorative-blob-3"></div>
+                    <div className="hero-decorative-blob hero-decorative-blob-4"></div>
+
+                    {/* Imagen principal con transición */}
+                    <div className="relative w-full h-full rounded-full overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        key={`image-${currentSlide}`}
+                        src={heroSlides[currentSlide].image}
+                        alt={heroSlides[currentSlide].title}
+                        className="w-full h-full object-cover hero-image-super-oval relative z-10 hero-image-fade"
+                        style={{
+                          WebkitMaskImage:
+                            'radial-gradient(ellipse 100% 70% at center, black 0%, black 55%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.4) 90%, rgba(0, 0, 0, 0.1) 98%, transparent 100%)',
+                          maskImage:
+                            'radial-gradient(ellipse 100% 70% at center, black 0%, black 55%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.4) 90%, rgba(0, 0, 0, 0.1) 98%, transparent 100%)',
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Título con animación */}
+                <h1
+                  key={`title-${currentSlide}`}
+                  className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white animate-fade-in-up"
+                >
+                  {heroSlides[currentSlide].title}
+                </h1>
+
+                {/* Subtítulo con animación */}
+                <p
+                  key={`subtitle-${currentSlide}`}
+                  className="text-xl md:text-2xl mb-8 text-blue-100 animate-fade-in-up"
+                >
+                  {heroSlides[currentSlide].subtitle}
+                </p>
+              </div>
+            </div>
+
+            {/* Desktop Layout (text left, image right) */}
+            <div className="hidden lg:flex lg:items-center lg:justify-between lg:gap-12">
+              {/* Text Content - Left Side */}
+              <div className="flex-1 lg:max-w-2xl">
+                {/* Título con animación */}
+                <h1
+                  key={`title-${currentSlide}`}
+                  className="text-4xl xl:text-6xl 2xl:text-7xl font-bold mb-6 leading-tight text-white animate-fade-in-up text-left"
+                >
+                  {heroSlides[currentSlide].title}
+                </h1>
+
+                {/* Subtítulo con animación */}
+                <p
+                  key={`subtitle-${currentSlide}`}
+                  className="text-xl xl:text-2xl 2xl:text-3xl mb-8 text-blue-100 animate-fade-in-up text-left"
+                >
+                  {heroSlides[currentSlide].subtitle}
+                </p>
+              </div>
+
+              {/* Image Content - Right Side */}
+              <div className="flex-1 lg:max-w-lg xl:max-w-xl">
+                <div className="relative w-full h-96 xl:h-[28rem] 2xl:h-[32rem]">
                   {/* Elementos decorativos orgánicos en los vértices */}
                   <div className="hero-decorative-blob hero-decorative-blob-1"></div>
                   <div className="hero-decorative-blob hero-decorative-blob-2"></div>
@@ -193,46 +237,34 @@ export default function LandingPage() {
                   <div className="hero-decorative-blob hero-decorative-blob-4"></div>
 
                   {/* Imagen principal con transición */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    key={`image-${currentSlide}`}
-                    src={heroSlides[currentSlide].image}
-                    alt={heroSlides[currentSlide].title}
-                    className="w-full h-full object-cover hero-image-super-oval relative z-10 animate-slide-in-right"
-                    style={{
-                      WebkitMaskImage:
-                        'radial-gradient(ellipse 100% 70% at center, black 0%, black 55%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.4) 90%, rgba(0, 0, 0, 0.1) 98%, transparent 100%)',
-                      maskImage:
-                        'radial-gradient(ellipse 100% 70% at center, black 0%, black 55%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.4) 90%, rgba(0, 0, 0, 0.1) 98%, transparent 100%)',
-                    }}
-                  />
+                  <div className="relative w-full h-full rounded-full overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      key={`image-${currentSlide}`}
+                      src={heroSlides[currentSlide].image}
+                      alt={heroSlides[currentSlide].title}
+                      className="w-full h-full object-cover hero-image-super-oval relative z-10 hero-image-fade"
+                      style={{
+                        WebkitMaskImage:
+                          'radial-gradient(ellipse 100% 70% at center, black 0%, black 55%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.4) 90%, rgba(0, 0, 0, 0.1) 98%, transparent 100%)',
+                        maskImage:
+                          'radial-gradient(ellipse 100% 70% at center, black 0%, black 55%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.4) 90%, rgba(0, 0, 0, 0.1) 98%, transparent 100%)',
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
-
-              {/* Título con animación */}
-              <h1
-                key={`title-${currentSlide}`}
-                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-sky-600 animate-fade-in-up"
-              >
-                {heroSlides[currentSlide].title}
-              </h1>
-
-              {/* Subtítulo con animación */}
-              <p
-                key={`subtitle-${currentSlide}`}
-                className="text-xl md:text-2xl lg:text-3xl mb-8 text-sky-500 animate-fade-in-up"
-              >
-                {heroSlides[currentSlide].subtitle}
-              </p>
             </div>
 
-            {/* Fixed CTA Button */}
-            <Link
-              href="/preficha"
-              className="inline-block bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-sky-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-            >
-              Cotizá tu prepaga ideal
-            </Link>
+            {/* CTA Button - Centered for all layouts */}
+            <div className="text-center mt-8 lg:mt-12 relative z-50">
+              <Link
+                href="/preficha"
+                className="cta-button inline-block px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                Cotizá tu prepaga ideal
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -275,7 +307,9 @@ export default function LandingPage() {
               key={index}
               onClick={() => goToSlide(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'
+                index === currentSlide
+                  ? 'bg-blue-300 scale-125'
+                  : 'bg-blue-300/50 hover:bg-blue-300/75'
               } ${isAnimating ? 'pointer-events-none' : ''}`}
               aria-label={`Ir al slide ${index + 1}`}
               disabled={isAnimating}
@@ -284,28 +318,62 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-20 bg-gray-50">
+      {/* Why Choose Sancor Section */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-sky-600 mb-4">
-              ¿Por qué elegirnos?
+              ¿Por qué elegir Sancor?
             </h2>
             <p className="text-xl text-sky-500 max-w-3xl mx-auto">
-              Ofrecemos la mejor cobertura médica con beneficios únicos que se adaptan a tu vida
+              Sancor Salud es la prepaga más confiable del país, con más de 25 años de experiencia
+              cuidando a las familias argentinas
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
-              >
-                <div className="text-4xl mb-4">{benefit.icon}</div>
-                <h3 className="text-xl font-semibold text-sky-600 mb-3">{benefit.title}</h3>
-                <p className="text-sky-500">{benefit.description}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Sancor Benefit 1 */}
+            <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="flex justify-center mb-4">
+                <Trophy className="w-12 h-12 text-sky-600" />
               </div>
-            ))}
+              <h3 className="text-xl font-semibold text-sky-600 mb-3">Líder del mercado</h3>
+              <p className="text-sky-500">
+                Más de 1.200.000 afiliados confían en nosotros en todo el país
+              </p>
+            </div>
+
+            {/* Sancor Benefit 2 */}
+            <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="flex justify-center mb-4">
+                <Hospital className="w-12 h-12 text-sky-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-sky-600 mb-3">Red propia</h3>
+              <p className="text-sky-500">
+                Más de 50 centros médicos propios y 15.000 prestadores en todo el país
+              </p>
+            </div>
+
+            {/* Sancor Benefit 3 */}
+            <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="flex justify-center mb-4">
+                <Shield className="w-12 h-12 text-sky-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-sky-600 mb-3">Cobertura total</h3>
+              <p className="text-sky-500">
+                Emergencias 24/7, internación, cirugías y especialidades completas
+              </p>
+            </div>
+
+            {/* Sancor Benefit 4 */}
+            <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="flex justify-center mb-4">
+                <Smartphone className="w-12 h-12 text-sky-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-sky-600 mb-3">App móvil</h3>
+              <p className="text-sky-500">
+                Gestioná tu cobertura, turnos y consultas desde tu celular
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -418,6 +486,128 @@ export default function LandingPage() {
           >
             Cotizá Ahora - Es Gratis
           </Link>
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-sky-600 mb-4">Dejanos tus datos</h2>
+            <p className="text-xl text-sky-500 max-w-2xl mx-auto">
+              Uno de nuestros asesores se pondrá en contacto para ayudarte a encontrar la cobertura
+              médica que mejor se adapte a vos.
+            </p>
+          </div>
+
+          <form className="bg-gray-50 rounded-2xl p-8 shadow-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Nombre y Apellido */}
+              <div className="md:col-span-2">
+                <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-2">
+                  Nombre y Apellido *
+                </label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  placeholder="Ingresá tu nombre completo"
+                />
+              </div>
+
+              {/* Localidad */}
+              <div>
+                <label htmlFor="localidad" className="block text-sm font-medium text-gray-700 mb-2">
+                  Localidad *
+                </label>
+                <input
+                  type="text"
+                  id="localidad"
+                  name="localidad"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  placeholder="Ciudad, Provincia"
+                />
+              </div>
+
+              {/* DNI */}
+              <div>
+                <label htmlFor="dni" className="block text-sm font-medium text-gray-700 mb-2">
+                  DNI *
+                </label>
+                <input
+                  type="text"
+                  id="dni"
+                  name="dni"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  placeholder="12345678"
+                />
+              </div>
+
+              {/* Teléfono */}
+              <div>
+                <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 mb-2">
+                  Teléfono *
+                </label>
+                <input
+                  type="tel"
+                  id="telefono"
+                  name="telefono"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  placeholder="+54 11 1234-5678"
+                />
+              </div>
+
+              {/* Correo electrónico */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Correo electrónico *
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  placeholder="tu@email.com"
+                />
+              </div>
+
+              {/* Cobertura de interés */}
+              <div className="md:col-span-2">
+                <label htmlFor="cobertura" className="block text-sm font-medium text-gray-700 mb-2">
+                  ¿Qué cobertura te interesa? (opcional)
+                </label>
+                <select
+                  id="cobertura"
+                  name="cobertura"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                >
+                  <option value="">Seleccioná una opción</option>
+                  <option value="sancor">Sancor</option>
+                  <option value="avalian">Avalian</option>
+                  <option value="galeno">Galeno</option>
+                  <option value="premedic">Premedic</option>
+                  <option value="prevencion">Prevención</option>
+                  <option value="otro">Otra</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="mt-8 text-center">
+              <button
+                type="submit"
+                className="cta-button px-12 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                Enviar Solicitud
+              </button>
+            </div>
+          </form>
         </div>
       </section>
 
