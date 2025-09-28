@@ -1,7 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { getContactos, updateContactoStatus, deleteContacto, Contacto } from '../../../lib/adminContactService';
+import { useState, useEffect, useCallback } from 'react';
+import {
+  getContactos,
+  updateContactoStatus,
+  deleteContacto,
+  Contacto,
+} from '../../../lib/adminContactService';
 import { Search, Filter, Trash2, CheckCircle, XCircle, Clock, UserCheck } from 'lucide-react';
 
 export default function ContactosPage() {
@@ -16,7 +21,7 @@ export default function ContactosPage() {
 
   const itemsPerPage = 10;
 
-  const loadContactos = async () => {
+  const loadContactos = useCallback(async () => {
     setLoading(true);
     try {
       const result = await getContactos(currentPage, itemsPerPage, search, statusFilter);
@@ -32,7 +37,7 @@ export default function ContactosPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, itemsPerPage, search, statusFilter]);
 
   useEffect(() => {
     loadContactos();
@@ -56,7 +61,7 @@ export default function ContactosPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('¿Estás seguro de que quieres eliminar este contacto?')) return;
-    
+
     setUpdating(id);
     try {
       const result = await deleteContacto(id);
@@ -74,21 +79,31 @@ export default function ContactosPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'contacted': return 'bg-blue-100 text-blue-800';
-      case 'closed': return 'bg-green-100 text-green-800';
-      case 'not_interested': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'contacted':
+        return 'bg-blue-100 text-blue-800';
+      case 'closed':
+        return 'bg-green-100 text-green-800';
+      case 'not_interested':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'pending': return 'Pendiente';
-      case 'contacted': return 'Contactado';
-      case 'closed': return 'Cliente Cerrado';
-      case 'not_interested': return 'No Interesado';
-      default: return status;
+      case 'pending':
+        return 'Pendiente';
+      case 'contacted':
+        return 'Contactado';
+      case 'closed':
+        return 'Cliente Cerrado';
+      case 'not_interested':
+        return 'No Interesado';
+      default:
+        return status;
     }
   };
 
@@ -100,9 +115,7 @@ export default function ContactosPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Gestión de Contactos</h1>
-          <p className="mt-2 text-gray-600">
-            Administra los formularios de contacto recibidos
-          </p>
+          <p className="mt-2 text-gray-600">Administra los formularios de contacto recibidos</p>
         </div>
 
         {/* Filtros y búsqueda */}
@@ -193,12 +206,8 @@ export default function ContactosPage() {
                     <tr key={contacto.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div>
-                          <div className="text-sm font-medium text-gray-900">
-                            {contacto.nombre}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {contacto.email}
-                          </div>
+                          <div className="text-sm font-medium text-gray-900">{contacto.nombre}</div>
+                          <div className="text-sm text-gray-500">{contacto.email}</div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -209,7 +218,9 @@ export default function ContactosPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(contacto.status)}`}>
+                        <span
+                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(contacto.status)}`}
+                        >
                           {getStatusLabel(contacto.status)}
                         </span>
                       </td>
@@ -219,7 +230,7 @@ export default function ContactosPage() {
                           month: 'short',
                           day: 'numeric',
                           hour: '2-digit',
-                          minute: '2-digit'
+                          minute: '2-digit',
                         })}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -285,8 +296,7 @@ export default function ContactosPage() {
                     <span className="font-medium">
                       {Math.min(currentPage * itemsPerPage, total)}
                     </span>{' '}
-                    de{' '}
-                    <span className="font-medium">{total}</span> resultados
+                    de <span className="font-medium">{total}</span> resultados
                   </p>
                 </div>
                 <div>

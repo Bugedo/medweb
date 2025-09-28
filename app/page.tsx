@@ -1,8 +1,19 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Users, Building2, Heart, Map, Trophy, Hospital, Shield, Smartphone } from 'lucide-react';
+import {
+  Users,
+  Building2,
+  Heart,
+  Map,
+  Trophy,
+  Hospital,
+  Shield,
+  Smartphone,
+  Facebook,
+  Instagram,
+} from 'lucide-react';
 import Header from './components/Header';
 
 interface ContactData {
@@ -13,10 +24,39 @@ interface ContactData {
   email: string;
 }
 
+// Hook para animaciones de scroll
+const useScrollAnimation = () => {
+  const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleElements((prev) => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+      },
+    );
+
+    const elements = document.querySelectorAll('[data-scroll-animation]');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return visibleElements;
+};
+
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const visibleElements = useScrollAnimation();
 
   // Contact form state
   const [contactData, setContactData] = useState<ContactData>({
@@ -110,26 +150,30 @@ export default function LandingPage() {
   const heroSlides = [
     {
       id: 1,
-      title: 'Cuidamos lo que más amás',
-      subtitle: 'Tu familia merece la cobertura que mejor se adapta a vos',
+      title: 'Tu familia protegida desde el día uno',
+      subtitle:
+        'Cobertura médica completa sin carencias. Acceso inmediato a la mejor atención médica del país.',
       image: '/images/hero/hero1.jpg',
     },
     {
       id: 2,
-      title: 'Protección 24/7',
-      subtitle: 'Emergencias médicas cubiertas las 24 horas, todos los días',
+      title: 'Emergencias cubiertas 24/7',
+      subtitle:
+        'Tranquilidad total para tu familia. Emergencias médicas resueltas al instante, sin esperas ni complicaciones.',
       image: '/images/hero/hero2.jpg',
     },
     {
       id: 3,
-      title: 'Sin Carencias',
-      subtitle: 'Acceso inmediato a todos los servicios médicos',
+      title: 'Planes para toda la familia',
+      subtitle:
+        'Cobertura completa para vos y tus seres queridos. Protección médica integral para cada miembro de tu familia.',
       image: '/images/hero/hero3.jpg',
     },
     {
       id: 4,
-      title: 'Cobertura Nacional',
-      subtitle: 'Atención médica en todo el país con la red más amplia',
+      title: 'Más de 200.000 profesionales',
+      subtitle:
+        'La red médica más amplia del país. Especialistas de todas las áreas disponibles para tu familia.',
       image: '/images/hero/hero4.jpg',
     },
   ];
@@ -138,41 +182,23 @@ export default function LandingPage() {
     {
       number: '01',
       title: 'Cotizá tu plan',
-      description: 'Completá el formulario con tus datos y necesidades en menos de 5 minutos',
+      description:
+        'Completá nuestro formulario en segundos y recibí una cotización personalizada al instante. Sin compromisos, sin esperas.',
+      icon: '/images/benefits/1.svg',
     },
     {
       number: '02',
-      title: 'Elegí tu cobertura',
-      description: 'Seleccioná el plan que mejor se adapte a tu familia y presupuesto',
+      title: 'Elegí tu cobertura perfecta',
+      description:
+        'Compará planes diseñados para tu familia y presupuesto. Nuestros asesores te ayudan a elegir la mejor opción.',
+      icon: '/images/benefits/2.svg',
     },
     {
       number: '03',
-      title: 'Disfrutá la tranquilidad',
-      description: 'Activá tu cobertura al instante y protegé a tu familia desde el primer día',
-    },
-  ];
-
-  const testimonials = [
-    {
-      name: 'María González',
-      role: 'Mamá de 2 hijos',
-      content:
-        'Desde que tengo la cobertura, mi familia está tranquila. La atención es excelente y nunca tuvimos problemas.',
-      rating: 5,
-    },
-    {
-      name: 'Carlos Rodríguez',
-      role: 'Empresario',
-      content:
-        'El proceso fue súper fácil y rápido. En 24 horas ya tenía mi cobertura activa. Totalmente recomendable.',
-      rating: 5,
-    },
-    {
-      name: 'Ana Martínez',
-      role: 'Docente',
-      content:
-        'La app es genial, puedo gestionar todo desde mi teléfono. La atención al cliente es de primera.',
-      rating: 5,
+      title: 'Disfrutá la tranquilidad total',
+      description:
+        'Activá tu cobertura inmediatamente y accedé a la red médica más amplia del país. Tu familia protegida desde el día uno.',
+      icon: '/images/benefits/3.svg',
     },
   ];
 
@@ -234,22 +260,19 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-sky-600">
+    <div className="min-h-screen text-white">
       {/* Header */}
       <Header />
 
       {/* Hero Section - Full Screen Carousel */}
       <section className="relative h-[calc(100vh-5rem)] overflow-hidden">
-        {/* Fixed Background */}
-        <div className="absolute inset-0 hero-background">
-          {/* Animated Background Elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="hero-bg-shape hero-bg-shape-1"></div>
-            <div className="hero-bg-shape hero-bg-shape-2"></div>
-            <div className="hero-bg-shape hero-bg-shape-3"></div>
-            <div className="hero-bg-shape hero-bg-shape-4"></div>
-            <div className="hero-bg-shape hero-bg-shape-5"></div>
-          </div>
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="hero-bg-shape hero-bg-shape-1"></div>
+          <div className="hero-bg-shape hero-bg-shape-2"></div>
+          <div className="hero-bg-shape hero-bg-shape-3"></div>
+          <div className="hero-bg-shape hero-bg-shape-4"></div>
+          <div className="hero-bg-shape hero-bg-shape-5"></div>
         </div>
 
         {/* Content */}
@@ -363,7 +386,7 @@ export default function LandingPage() {
                 }}
                 className="cta-button inline-block px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
-                Cotizá tu prepaga ideal
+                Cotizá tu prepaga
               </button>
             </div>
           </div>
@@ -420,58 +443,70 @@ export default function LandingPage() {
       </section>
 
       {/* Why Choose Sancor Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="hero-bg-shape hero-bg-shape-1"></div>
+          <div className="hero-bg-shape hero-bg-shape-2"></div>
+          <div className="hero-bg-shape hero-bg-shape-3"></div>
+          <div className="hero-bg-shape hero-bg-shape-4"></div>
+          <div className="hero-bg-shape hero-bg-shape-5"></div>
+        </div>
+        <div
+          id="why-choose-sancor"
+          data-scroll-animation
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative scroll-fade-in-up ${visibleElements.has('why-choose-sancor') ? 'visible' : ''}`}
+        >
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-sky-600 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               ¿Por qué elegir Sancor?
             </h2>
-            <p className="text-xl text-sky-500 max-w-3xl mx-auto">
+            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
               Sancor Salud es la prepaga más confiable del país, con más de 25 años de experiencia
               cuidando a las familias argentinas
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Sancor Benefit 1 */}
-            <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
               <div className="flex justify-center mb-4">
-                <Trophy className="w-12 h-12 text-sky-600" />
+                <Trophy className="w-12 h-12 text-sky-700" />
               </div>
-              <h3 className="text-xl font-semibold text-sky-600 mb-3">Líder del mercado</h3>
-              <p className="text-sky-500">
+              <h3 className="text-xl font-semibold text-sky-700 mb-3">Líder del mercado</h3>
+              <p className="text-sky-700">
                 Más de 1.200.000 afiliados confían en nosotros en todo el país
               </p>
             </div>
 
             {/* Sancor Benefit 2 */}
-            <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
               <div className="flex justify-center mb-4">
-                <Hospital className="w-12 h-12 text-sky-600" />
+                <Hospital className="w-12 h-12 text-sky-700" />
               </div>
-              <h3 className="text-xl font-semibold text-sky-600 mb-3">Red propia</h3>
-              <p className="text-sky-500">
-                Más de 50 centros médicos propios y 15.000 prestadores en todo el país
+              <h3 className="text-xl font-semibold text-sky-700 mb-3">Red propia</h3>
+              <p className="text-sky-700">
+                Red de centros médicos propios y prestadores en todo el país
               </p>
             </div>
 
             {/* Sancor Benefit 3 */}
-            <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
               <div className="flex justify-center mb-4">
-                <Shield className="w-12 h-12 text-sky-600" />
+                <Shield className="w-12 h-12 text-sky-700" />
               </div>
-              <h3 className="text-xl font-semibold text-sky-600 mb-3">Cobertura total</h3>
-              <p className="text-sky-500">
+              <h3 className="text-xl font-semibold text-sky-700 mb-3">Cobertura total</h3>
+              <p className="text-sky-700">
                 Emergencias 24/7, internación, cirugías y especialidades completas
               </p>
             </div>
 
             {/* Sancor Benefit 4 */}
-            <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
               <div className="flex justify-center mb-4">
-                <Smartphone className="w-12 h-12 text-sky-600" />
+                <Smartphone className="w-12 h-12 text-sky-700" />
               </div>
-              <h3 className="text-xl font-semibold text-sky-600 mb-3">App móvil</h3>
-              <p className="text-sky-500">
+              <h3 className="text-xl font-semibold text-sky-700 mb-3">App móvil</h3>
+              <p className="text-sky-700">
                 Gestioná tu cobertura, turnos y consultas desde tu celular
               </p>
             </div>
@@ -480,53 +515,54 @@ export default function LandingPage() {
       </section>
 
       {/* How it Works Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="hero-bg-shape hero-bg-shape-1"></div>
+          <div className="hero-bg-shape hero-bg-shape-2"></div>
+          <div className="hero-bg-shape hero-bg-shape-3"></div>
+          <div className="hero-bg-shape hero-bg-shape-4"></div>
+        </div>
+        <div
+          id="how-it-works"
+          data-scroll-animation
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative scroll-fade-in-up ${visibleElements.has('how-it-works') ? 'visible' : ''}`}
+        >
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-sky-600 mb-4">Cómo funciona</h2>
-            <p className="text-xl text-sky-500 max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Cómo funciona</h2>
+            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
               En solo 3 pasos simples, tenés la cobertura que tu familia necesita
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {steps.map((step, index) => (
-              <div key={index} className="text-center">
-                <div className="bg-sky-600 text-white w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
-                  {step.number}
-                </div>
-                <h3 className="text-xl font-semibold text-sky-600 mb-3">{step.title}</h3>
-                <p className="text-sky-500">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              <div key={index} className="group relative">
+                {/* Card Container */}
+                <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
+                  {/* SVG Icon - Más grande */}
+                  <div className="w-32 h-32 mx-auto mb-8 flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-200 rounded-full group-hover:from-sky-200 group-hover:to-sky-300 transition-all duration-300">
+                    <img
+                      src={step.icon}
+                      alt={`${step.title} icon`}
+                      className="w-20 h-20 object-contain"
+                    />
+                  </div>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-sky-600 mb-4">
-              Lo que dicen nuestros clientes
-            </h2>
-            <p className="text-xl text-sky-500 max-w-3xl mx-auto">
-              Miles de familias ya confían en nosotros para cuidar su salud
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-xl">
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={i} className="text-yellow-400 text-xl">
-                      ★
-                    </span>
-                  ))}
-                </div>
-                <p className="text-sky-500 mb-4 italic">&ldquo;{testimonial.content}&rdquo;</p>
-                <div>
-                  <p className="font-semibold text-sky-600">{testimonial.name}</p>
-                  <p className="text-sky-500 text-sm">{testimonial.role}</p>
+                  {/* Número con diseño mejorado */}
+                  <div className="absolute -top-4 -right-4 bg-gradient-to-r from-sky-600 to-sky-700 text-white w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg">
+                    {step.number}
+                  </div>
+
+                  {/* Contenido */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-sky-700 group-hover:text-sky-800 transition-colors duration-300">
+                      {step.title}
+                    </h3>
+                    <p className="text-sky-700 leading-relaxed text-base">{step.description}</p>
+                  </div>
+
+                  {/* Decorative element */}
+                  <div className="mt-6 w-16 h-1 bg-gradient-to-r from-sky-400 to-sky-600 rounded-full mx-auto group-hover:w-20 transition-all duration-300"></div>
                 </div>
               </div>
             ))}
@@ -535,25 +571,37 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="hero-bg-shape hero-bg-shape-1"></div>
+          <div className="hero-bg-shape hero-bg-shape-2"></div>
+          <div className="hero-bg-shape hero-bg-shape-4"></div>
+          <div className="hero-bg-shape hero-bg-shape-5"></div>
+        </div>
+        <div
+          id="faq-section"
+          data-scroll-animation
+          className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative scroll-fade-in-up ${visibleElements.has('faq-section') ? 'visible' : ''}`}
+        >
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-sky-600 mb-4">
-              Preguntas Frecuentes
-            </h2>
-            <p className="text-xl text-sky-500">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Preguntas Frecuentes</h2>
+            <p className="text-xl text-blue-200">
               Resolvemos las dudas más comunes sobre nuestros planes
             </p>
           </div>
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md">
+              <div
+                key={index}
+                className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl shadow-lg hover:shadow-xl hover:border-sky-200 transition-all duration-300"
+              >
                 <button
-                  className="w-full text-left p-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full text-left p-6 focus:outline-none"
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
                 >
                   <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-semibold text-sky-600">{faq.question}</h3>
+                    <h3 className="text-lg font-semibold text-sky-700">{faq.question}</h3>
                     <span
                       className={`text-2xl transition-transform duration-200 ${openFaq === index ? 'rotate-45' : ''}`}
                     >
@@ -563,7 +611,7 @@ export default function LandingPage() {
                 </button>
                 {openFaq === index && (
                   <div className="px-6 pb-6">
-                    <p className="text-sky-500">{faq.answer}</p>
+                    <p className="text-sky-700">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -572,40 +620,36 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-sky-600 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            ¿Listo para proteger a tu familia?
-          </h2>
-          <p className="text-xl mb-8 text-sky-100">
-            Cotizá tu plan ideal en menos de 5 minutos y empezá a disfrutar la tranquilidad
-          </p>
-          <Link
-            href="/preficha"
-            className="inline-block bg-white text-sky-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-sky-50 transition-colors duration-300 shadow-lg"
-          >
-            Cotizá Ahora - Es Gratis
-          </Link>
-        </div>
-      </section>
-
       {/* Contact Form Section */}
-      <section id="contact-form" className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="contact-form" className="py-20 relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="hero-bg-shape hero-bg-shape-1"></div>
+          <div className="hero-bg-shape hero-bg-shape-2"></div>
+          <div className="hero-bg-shape hero-bg-shape-3"></div>
+          <div className="hero-bg-shape hero-bg-shape-5"></div>
+        </div>
+        <div
+          id="contact-form-section"
+          data-scroll-animation
+          className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative scroll-fade-in-up ${visibleElements.has('contact-form-section') ? 'visible' : ''}`}
+        >
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-sky-600 mb-4">Dejanos tus datos</h2>
-            <p className="text-xl text-sky-500 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Dejanos tus datos</h2>
+            <p className="text-xl text-blue-200 max-w-2xl mx-auto">
               Uno de nuestros asesores se pondrá en contacto para ayudarte a encontrar la cobertura
               médica que mejor se adapte a vos.
             </p>
           </div>
 
-          <form onSubmit={handleContactSubmit} className="bg-gray-50 rounded-2xl p-8 shadow-lg">
+          <form
+            onSubmit={handleContactSubmit}
+            className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:border-sky-200 transition-all duration-300"
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Nombre y Apellido */}
               <div className="md:col-span-2">
-                <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="nombre" className="block text-sm font-medium text-sky-700 mb-2">
                   Nombre y Apellido *
                 </label>
                 <input
@@ -615,14 +659,14 @@ export default function LandingPage() {
                   value={contactData.nombre}
                   onChange={handleContactInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder-sky-700"
                   placeholder="Ingresá tu nombre completo"
                 />
               </div>
 
               {/* Localidad */}
               <div>
-                <label htmlFor="localidad" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="localidad" className="block text-sm font-medium text-sky-700 mb-2">
                   Localidad *
                 </label>
                 <input
@@ -632,14 +676,14 @@ export default function LandingPage() {
                   value={contactData.localidad}
                   onChange={handleContactInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder-sky-700"
                   placeholder="Ciudad, Provincia"
                 />
               </div>
 
               {/* DNI */}
               <div>
-                <label htmlFor="dni" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="dni" className="block text-sm font-medium text-sky-700 mb-2">
                   DNI *
                 </label>
                 <input
@@ -649,14 +693,14 @@ export default function LandingPage() {
                   value={contactData.dni}
                   onChange={handleContactInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder-sky-700"
                   placeholder="12345678"
                 />
               </div>
 
               {/* Teléfono */}
               <div>
-                <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="telefono" className="block text-sm font-medium text-sky-700 mb-2">
                   Teléfono *
                 </label>
                 <input
@@ -666,14 +710,14 @@ export default function LandingPage() {
                   value={contactData.telefono}
                   onChange={handleContactInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder-sky-700"
                   placeholder="+54 11 1234-5678"
                 />
               </div>
 
               {/* Correo electrónico */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-sky-700 mb-2">
                   Correo electrónico *
                 </label>
                 <input
@@ -683,7 +727,7 @@ export default function LandingPage() {
                   value={contactData.email}
                   onChange={handleContactInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder-sky-700"
                   placeholder="tu@email.com"
                 />
               </div>
@@ -719,60 +763,57 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-sky-800 text-white py-16">
+      <footer className="bg-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">Sancor Salud</h3>
-              <p className="text-sky-200 mb-4">
-                La cobertura médica que tu familia necesita, con la confianza que merece.
-              </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Logos */}
+            <div className="space-y-6">
+              <div>
+                <img
+                  src="/images/prepagaargentina.png"
+                  alt="Prepaga Argentina"
+                  className="h-16 w-auto"
+                />
+              </div>
+              <div>
+                <img src="/images/sancor.png" alt="Sancor Salud" className="h-12 w-auto" />
+              </div>
             </div>
+
+            {/* Contacto */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Planes</h4>
-              <ul className="space-y-2 text-sky-200">
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Plan Básico
-                  </a>
+              <h4 className="text-lg font-semibold mb-4 text-sky-700">Contacto</h4>
+              <ul className="space-y-2 text-sky-700">
+                <li className="flex items-center">
+                  <span className="mr-2">📞</span>
+                  +54 351 381 7823
                 </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Plan Familiar
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Plan Premium
-                  </a>
+                <li className="flex items-center">
+                  <span className="mr-2">🕒</span>
+                  Lun a Vie 8:00 - 18:00
                 </li>
               </ul>
             </div>
+
+            {/* Redes Sociales */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Atención</h4>
-              <ul className="space-y-2 text-sky-200">
-                <li>📞 0800-123-4567</li>
-                <li>📧 info@sancorsalud.com</li>
-                <li>🕒 Lun a Vie 8:00 - 20:00</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Síguenos</h4>
+              <h4 className="text-lg font-semibold mb-4 text-sky-700">Síguenos</h4>
               <div className="flex space-x-4">
-                <a href="#" className="text-sky-200 hover:text-white transition-colors">
-                  Facebook
+                <a href="#" className="text-sky-600 hover:text-sky-800 transition-colors">
+                  <Facebook className="w-8 h-8" />
                 </a>
-                <a href="#" className="text-sky-200 hover:text-white transition-colors">
-                  Instagram
-                </a>
-                <a href="#" className="text-sky-200 hover:text-white transition-colors">
-                  LinkedIn
+                <a href="#" className="text-sky-600 hover:text-sky-800 transition-colors">
+                  <Instagram className="w-8 h-8" />
                 </a>
               </div>
             </div>
           </div>
-          <div className="border-t border-sky-600 mt-12 pt-8 text-center text-sky-200">
-            <p>&copy; 2024 Sancor Salud. Todos los derechos reservados.</p>
+
+          {/* Copyright */}
+          <div className="border-t border-gray-200 mt-8 pt-4 text-center">
+            <p className="text-sky-700">
+              © 2025 Prepaga Argentina. Todos los derechos reservados.
+            </p>
           </div>
         </div>
       </footer>

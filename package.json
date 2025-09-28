@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
+    "dev:clean": "rm -rf .next && next dev --turbo",
+    "dev:optimized": "./scripts/dev.sh",
+    "dev:reset": "./scripts/dev.sh --clean",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

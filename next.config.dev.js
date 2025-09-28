@@ -14,7 +14,7 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@supabase/supabase-js'],
   },
-  // Mejoras para desarrollo más estable
+  // Configuración optimizada para desarrollo
   webpack: (config, { dev, isServer }) => {
     if (dev && !isServer) {
       config.watchOptions = {
@@ -28,6 +28,15 @@ const nextConfig = {
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
+  },
+  // Configuración de desarrollo
+  devIndicators: {
+    buildActivity: true,
+    buildActivityPosition: 'bottom-right',
+  },
+  // Configuración de compilación
+  compiler: {
+    removeConsole: false,
   },
 };
 

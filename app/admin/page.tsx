@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
 import { useRouter } from 'next/navigation';
 import {
@@ -63,7 +63,7 @@ export default function AdminPanel() {
     }
   }, [activeTab, currentPage, search, statusFilter]);
 
-  const checkUser = async () => {
+  const checkUser = useCallback(async () => {
     const {
       data: { session },
     } = await supabase.auth.getSession();
@@ -72,9 +72,9 @@ export default function AdminPanel() {
       return;
     }
     setUser(session.user);
-  };
+  }, [router]);
 
-  const loadPrefichas = async () => {
+  const loadPrefichas = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('prefichas')
@@ -105,9 +105,9 @@ export default function AdminPanel() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [supabase]);
 
-  const loadContactos = async () => {
+  const loadContactos = useCallback(async () => {
     setContactosLoading(true);
     try {
       const result = await getContactos(currentPage, 10, search, statusFilter);
@@ -123,7 +123,7 @@ export default function AdminPanel() {
     } finally {
       setContactosLoading(false);
     }
-  };
+  }, [currentPage, search, statusFilter]);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     setUpdating(id);

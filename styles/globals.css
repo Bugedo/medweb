@@ -413,7 +413,7 @@
     font-size: 2.5rem;
   }
 
-  .stats-card .text-4xl.md\\:text-5xl {
+  .stats-card .text-4xl.md\:text-5xl {
     font-size: 2.5rem;
   }
 
@@ -432,7 +432,7 @@
     font-size: 2rem;
   }
 
-  .stats-card .text-4xl.md\\:text-5xl {
+  .stats-card .text-4xl.md\:text-5xl {
     font-size: 2rem;
   }
 
@@ -534,6 +534,22 @@
   );
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
+}
+
+/* Global Page Background */
+.page-background {
+  background: linear-gradient(
+    135deg,
+    #1e3a8a 0%,
+    #1e40af 25%,
+    #1d4ed8 50%,
+    #2563eb 75%,
+    #1e40af 100%
+  );
+  background-size: 400% 400%;
+  background-attachment: fixed;
+  animation: gradientShift 15s ease infinite;
+  min-height: 100vh;
 }
 
 @keyframes gradientShift {
@@ -707,4 +723,57 @@
     width: 50px;
     height: 50px;
   }
+}
+
+/* Scroll Animation Classes */
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+
+.scroll-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-fade-in-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition:
+    opacity 1s ease-out,
+    transform 1s ease-out;
+}
+
+.scroll-fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-fade-in-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+
+.scroll-fade-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-fade-in-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+
+.scroll-fade-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
 }
