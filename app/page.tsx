@@ -5,10 +5,107 @@ import Link from 'next/link';
 import { Users, Building2, Heart, Map, Trophy, Hospital, Shield, Smartphone } from 'lucide-react';
 import Header from './components/Header';
 
+interface ContactData {
+  nombre: string;
+  localidad: string;
+  dni: string;
+  telefono: string;
+  email: string;
+}
+
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  // Contact form state
+  const [contactData, setContactData] = useState<ContactData>({
+    nombre: '',
+    localidad: '',
+    dni: '',
+    telefono: '',
+    email: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
+
+  // Contact form handlers
+  const handleContactInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setContactData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setSubmitMessage('');
+
+    // Validación básica en el frontend
+    if (
+      !contactData.nombre.trim() ||
+      !contactData.localidad.trim() ||
+      !contactData.dni.trim() ||
+      !contactData.telefono.trim() ||
+      !contactData.email.trim()
+    ) {
+      setSubmitStatus('error');
+      setSubmitMessage('Todos los campos son requeridos.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactData.email)) {
+      setSubmitStatus('error');
+      setSubmitMessage('Por favor ingresa un email válido.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitStatus('success');
+        setSubmitMessage(result.message || '¡Gracias! Nos pondremos en contacto contigo pronto.');
+        setContactData({
+          nombre: '',
+          localidad: '',
+          dni: '',
+          telefono: '',
+          email: '',
+        });
+      } else {
+        setSubmitStatus('error');
+        if (response.status === 429) {
+          setSubmitMessage(
+            'Demasiadas solicitudes. Por favor espera un momento antes de intentar nuevamente.',
+          );
+        } else {
+          setSubmitMessage(result.error || 'Error al enviar el formulario. Intenta nuevamente.');
+        }
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+      setSubmitMessage('Error de conexión. Verifica tu internet e intenta nuevamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const heroSlides = [
     {
@@ -258,12 +355,16 @@ export default function LandingPage() {
 
             {/* CTA Button - Centered for all layouts */}
             <div className="text-center mt-8 lg:mt-12 relative z-50">
-              <Link
-                href="/preficha"
+              <button
+                onClick={() => {
+                  document.getElementById('contact-form')?.scrollIntoView({
+                    behavior: 'smooth',
+                  });
+                }}
                 className="cta-button inline-block px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Cotizá tu prepaga ideal
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -490,7 +591,7 @@ export default function LandingPage() {
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-20 bg-white">
+      <section id="contact-form" className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-sky-600 mb-4">Dejanos tus datos</h2>
@@ -500,7 +601,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <form className="bg-gray-50 rounded-2xl p-8 shadow-lg">
+          <form onSubmit={handleContactSubmit} className="bg-gray-50 rounded-2xl p-8 shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Nombre y Apellido */}
               <div className="md:col-span-2">
@@ -511,6 +612,8 @@ export default function LandingPage() {
                   type="text"
                   id="nombre"
                   name="nombre"
+                  value={contactData.nombre}
+                  onChange={handleContactInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
                   placeholder="Ingresá tu nombre completo"
@@ -526,6 +629,8 @@ export default function LandingPage() {
                   type="text"
                   id="localidad"
                   name="localidad"
+                  value={contactData.localidad}
+                  onChange={handleContactInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
                   placeholder="Ciudad, Provincia"
@@ -541,6 +646,8 @@ export default function LandingPage() {
                   type="text"
                   id="dni"
                   name="dni"
+                  value={contactData.dni}
+                  onChange={handleContactInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
                   placeholder="12345678"
@@ -556,6 +663,8 @@ export default function LandingPage() {
                   type="tel"
                   id="telefono"
                   name="telefono"
+                  value={contactData.telefono}
+                  onChange={handleContactInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
                   placeholder="+54 11 1234-5678"
@@ -571,40 +680,38 @@ export default function LandingPage() {
                   type="email"
                   id="email"
                   name="email"
+                  value={contactData.email}
+                  onChange={handleContactInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
                   placeholder="tu@email.com"
                 />
               </div>
-
-              {/* Cobertura de interés */}
-              <div className="md:col-span-2">
-                <label htmlFor="cobertura" className="block text-sm font-medium text-gray-700 mb-2">
-                  ¿Qué cobertura te interesa? (opcional)
-                </label>
-                <select
-                  id="cobertura"
-                  name="cobertura"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
-                >
-                  <option value="">Seleccioná una opción</option>
-                  <option value="sancor">Sancor</option>
-                  <option value="avalian">Avalian</option>
-                  <option value="galeno">Galeno</option>
-                  <option value="premedic">Premedic</option>
-                  <option value="prevencion">Prevención</option>
-                  <option value="otro">Otra</option>
-                </select>
-              </div>
             </div>
+
+            {/* Status Message */}
+            {submitStatus !== 'idle' && (
+              <div
+                className={`mt-6 p-4 rounded-lg text-center ${
+                  submitStatus === 'success'
+                    ? 'bg-green-100 text-green-800 border border-green-200'
+                    : 'bg-red-100 text-red-800 border border-red-200'
+                }`}
+              >
+                {submitMessage}
+              </div>
+            )}
 
             {/* Submit Button */}
             <div className="mt-8 text-center">
               <button
                 type="submit"
-                className="cta-button px-12 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                disabled={isSubmitting}
+                className={`cta-button px-12 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 ${
+                  isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
-                Enviar Solicitud
+                {isSubmitting ? 'Enviando...' : 'Enviar Solicitud'}
               </button>
             </div>
           </form>

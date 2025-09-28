@@ -38,22 +38,22 @@ export async function middleware(req: NextRequest) {
     !req.nextUrl.pathname.startsWith('/admin/unauthorized')
   ) {
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    // Si no hay sesión, redirigir al login
-    if (!session) {
+    // Si no hay usuario, redirigir al login
+    if (!user) {
       return NextResponse.redirect(new URL('/admin/login', req.url));
     }
 
     // Verificar si el usuario es admin
-    const { data: user } = await supabase
+    const { data: userData } = await supabase
       .from('users')
       .select('*')
-      .eq('email', session.user.email)
+      .eq('email', user.email)
       .single();
 
-    if (!user || !['admin', 'super_admin'].includes(user.role)) {
+    if (!userData || !['admin', 'super_admin'].includes(userData.role)) {
       return NextResponse.redirect(new URL('/admin/unauthorized', req.url));
     }
   }

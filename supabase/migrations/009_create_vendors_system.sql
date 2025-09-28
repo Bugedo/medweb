@@ -24,6 +24,12 @@ CREATE INDEX IF NOT EXISTS idx_prefichas_vendor_id ON public.prefichas(vendor_id
 ALTER TABLE public.vendors ENABLE ROW LEVEL SECURITY;
 
 -- Políticas RLS para vendors
+-- Eliminar políticas existentes si existen
+DROP POLICY IF EXISTS "Admins can view all vendors" ON public.vendors;
+DROP POLICY IF EXISTS "Admins can insert vendors" ON public.vendors;
+DROP POLICY IF EXISTS "Admins can update vendors" ON public.vendors;
+DROP POLICY IF EXISTS "Admins can delete vendors" ON public.vendors;
+
 -- Los administradores pueden ver todos los vendedores
 CREATE POLICY "Admins can view all vendors"
 ON public.vendors FOR SELECT
@@ -74,6 +80,7 @@ END;
 $$ language 'plpgsql';
 
 -- Trigger para actualizar updated_at en vendors
+DROP TRIGGER IF EXISTS update_vendors_updated_at ON public.vendors;
 CREATE TRIGGER update_vendors_updated_at 
     BEFORE UPDATE ON public.vendors 
     FOR EACH ROW 
