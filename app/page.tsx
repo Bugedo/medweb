@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Users,
   Building2,
@@ -296,11 +297,12 @@ export default function LandingPage() {
                   <div className="relative w-64 h-64 md:w-80 md:h-80">
                     {/* Imagen principal con transición */}
                     <div className="relative w-full h-full rounded-full overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         key={`image-${currentSlide}`}
                         src={heroSlides[currentSlide].image}
                         alt={heroSlides[currentSlide].title}
+                        width={320}
+                        height={320}
                         className="w-full h-full object-cover hero-image-super-oval relative z-10 hero-image-fade"
                         style={{
                           WebkitMaskImage:
@@ -357,11 +359,12 @@ export default function LandingPage() {
                 <div className="relative w-full h-96 xl:h-[28rem] 2xl:h-[32rem]">
                   {/* Imagen principal con transición */}
                   <div className="relative w-full h-full rounded-full overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       key={`image-${currentSlide}`}
                       src={heroSlides[currentSlide].image}
                       alt={heroSlides[currentSlide].title}
+                      width={512}
+                      height={512}
                       className="w-full h-full object-cover hero-image-super-oval relative z-10 hero-image-fade"
                       style={{
                         WebkitMaskImage:
@@ -525,9 +528,11 @@ export default function LandingPage() {
                 <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
                   {/* SVG Icon - Más grande */}
                   <div className="w-32 h-32 mx-auto mb-8 flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-200 rounded-full group-hover:from-sky-200 group-hover:to-sky-300 transition-all duration-300">
-                    <img
+                    <Image
                       src={step.icon}
                       alt={`${step.title} icon`}
+                      width={80}
+                      height={80}
                       className="w-20 h-20 object-contain"
                     />
                   </div>
@@ -739,14 +744,22 @@ export default function LandingPage() {
             {/* Logos */}
             <div className="space-y-6">
               <div>
-                <img
+                <Image
                   src="/images/prepagaargentina.png"
                   alt="Prepaga Argentina"
+                  width={200}
+                  height={64}
                   className="h-16 w-auto"
                 />
               </div>
               <div>
-                <img src="/images/sancor.png" alt="Sancor Salud" className="h-12 w-auto" />
+                <Image 
+                  src="/images/sancor.png" 
+                  alt="Sancor Salud" 
+                  width={120}
+                  height={48}
+                  className="h-12 w-auto" 
+                />
               </div>
             </div>
 

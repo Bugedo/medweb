@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import { Metadata } from 'next';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Prepaga Argentina',
@@ -50,7 +51,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           className="whatsapp-float animate-pulse"
           aria-label="Contactar por WhatsApp"
         >
-          <img src="/images/whapp.png" alt="WhatsApp" />
+          <Image 
+            src="/images/whapp.png" 
+            alt="WhatsApp" 
+            width={60}
+            height={60}
+            priority
+          />
         </a>
       </body>
     </html>

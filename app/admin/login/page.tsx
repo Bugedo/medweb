@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -121,9 +122,9 @@ export default function AdminLogin() {
           </form>
 
           <div className="mt-6 text-center">
-            <a href="/" className="text-sm text-blue-600 hover:text-blue-500">
+            <Link href="/" className="text-sm text-blue-600 hover:text-blue-500">
               ← Volver al sitio principal
-            </a>
+            </Link>
           </div>
         </div>
       </div>

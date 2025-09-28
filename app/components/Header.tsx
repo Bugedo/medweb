@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 export default function Header() {
   return (
@@ -7,19 +8,25 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo de Prepaga Argentina */}
           <div className="flex-shrink-0">
-            <img
+            <Image
               src="/images/prepagaargentina.png"
               alt="Prepaga Argentina"
+              width={200}
+              height={80}
               className="h-12 md:h-20 w-auto header-logo"
+              priority
             />
           </div>
 
           {/* Logo de Sancor Salud */}
           <div className="flex-shrink-0">
-            <img
+            <Image
               src="/images/sancor.png"
               alt="Sancor Salud"
+              width={120}
+              height={64}
               className="h-6 md:h-16 w-auto header-logo"
+              priority
             />
           </div>
         </div>
