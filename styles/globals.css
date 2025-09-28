@@ -777,3 +777,177 @@
   opacity: 1;
   transform: translateX(0);
 }
+
+/* Additional Decorative Elements */
+.hero-bg-shape-6 {
+  width: 120px;
+  height: 120px;
+  top: 15%;
+  right: 5%;
+  animation-delay: -8s;
+  animation-duration: 22s;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+}
+
+.hero-bg-shape-7 {
+  width: 180px;
+  height: 180px;
+  bottom: 15%;
+  left: 5%;
+  animation-delay: -12s;
+  animation-duration: 26s;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  background: transparent;
+  border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+}
+
+.hero-bg-shape-8 {
+  width: 100px;
+  height: 100px;
+  top: 40%;
+  left: 5%;
+  animation-delay: -6s;
+  animation-duration: 24s;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+}
+
+.hero-bg-shape-9 {
+  width: 160px;
+  height: 160px;
+  bottom: 30%;
+  right: 20%;
+  animation-delay: -14s;
+  animation-duration: 28s;
+  border: 3px dotted rgba(255, 255, 255, 0.15);
+  background: transparent;
+  border-radius: 60% 40% 40% 60% / 60% 60% 40% 40%;
+}
+
+.hero-bg-shape-10 {
+  width: 80px;
+  height: 80px;
+  top: 25%;
+  left: 15%;
+  animation-delay: -4s;
+  animation-duration: 20s;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 30% 70% 30% 70% / 30% 30% 70% 70%;
+}
+
+/* Additional Decorative Elements - More Shapes */
+.hero-bg-shape-11 {
+  width: 140px;
+  height: 140px;
+  top: 5%;
+  right: 15%;
+  animation-delay: -16s;
+  animation-duration: 32s;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 40% 60% 40% 60% / 40% 40% 60% 60%;
+}
+
+.hero-bg-shape-12 {
+  width: 110px;
+  height: 110px;
+  bottom: 5%;
+  right: 10%;
+  animation-delay: -18s;
+  animation-duration: 30s;
+  border: 2px dashed rgba(255, 255, 255, 0.18);
+  background: transparent;
+  border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+}
+
+.hero-bg-shape-13 {
+  width: 90px;
+  height: 90px;
+  top: 60%;
+  left: 8%;
+  animation-delay: -10s;
+  animation-duration: 26s;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 60% 40% 60% 40% / 60% 60% 40% 40%;
+}
+
+.hero-bg-shape-14 {
+  width: 130px;
+  height: 130px;
+  bottom: 40%;
+  right: 5%;
+  animation-delay: -20s;
+  animation-duration: 34s;
+  border: 3px dotted rgba(255, 255, 255, 0.12);
+  background: transparent;
+  border-radius: 30% 70% 30% 70% / 30% 30% 70% 70%;
+}
+
+.hero-bg-shape-15 {
+  width: 70px;
+  height: 70px;
+  top: 35%;
+  right: 25%;
+  animation-delay: -6s;
+  animation-duration: 22s;
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+}
+
+.hero-bg-shape-16 {
+  width: 150px;
+  height: 150px;
+  bottom: 10%;
+  left: 20%;
+  animation-delay: -22s;
+  animation-duration: 36s;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  border-radius: 40% 60% 40% 60% / 40% 40% 60% 60%;
+}
+
+.hero-bg-shape-17 {
+  width: 100px;
+  height: 100px;
+  top: 70%;
+  right: 30%;
+  animation-delay: -12s;
+  animation-duration: 28s;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 70% 30% 70% 30% / 70% 70% 30% 30%;
+}
+
+.hero-bg-shape-18 {
+  width: 120px;
+  height: 120px;
+  bottom: 60%;
+  left: 12%;
+  animation-delay: -24s;
+  animation-duration: 38s;
+  border: 3px dotted rgba(255, 255, 255, 0.16);
+  background: transparent;
+  border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+}
+
+.hero-bg-shape-19 {
+  width: 85px;
+  height: 85px;
+  top: 45%;
+  left: 25%;
+  animation-delay: -8s;
+  animation-duration: 24s;
+  background: rgba(255, 255, 255, 0.11);
+  border-radius: 35% 65% 35% 65% / 35% 35% 65% 65%;
+}
+
+.hero-bg-shape-20 {
+  width: 160px;
+  height: 160px;
+  bottom: 25%;
+  right: 35%;
+  animation-delay: -26s;
+  animation-duration: 40s;
+  border: 2px dashed rgba(255, 255, 255, 0.13);
+  background: transparent;
+  border-radius: 45% 55% 45% 55% / 45% 45% 55% 55%;
+}

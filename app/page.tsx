@@ -260,21 +260,32 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-white hero-background">
       {/* Header */}
       <Header />
 
-      {/* Hero Section - Full Screen Carousel */}
-      <section className="relative h-[calc(100vh-5rem)] overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="hero-bg-shape hero-bg-shape-1"></div>
-          <div className="hero-bg-shape hero-bg-shape-2"></div>
-          <div className="hero-bg-shape hero-bg-shape-3"></div>
-          <div className="hero-bg-shape hero-bg-shape-4"></div>
-          <div className="hero-bg-shape hero-bg-shape-5"></div>
-        </div>
+      {/* Global Decorative Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="hero-bg-shape hero-bg-shape-5"></div>
+        <div className="hero-bg-shape hero-bg-shape-6"></div>
+        <div className="hero-bg-shape hero-bg-shape-7"></div>
+        <div className="hero-bg-shape hero-bg-shape-8"></div>
+        <div className="hero-bg-shape hero-bg-shape-9"></div>
+        <div className="hero-bg-shape hero-bg-shape-10"></div>
+        <div className="hero-bg-shape hero-bg-shape-11"></div>
+        <div className="hero-bg-shape hero-bg-shape-12"></div>
+        <div className="hero-bg-shape hero-bg-shape-13"></div>
+        <div className="hero-bg-shape hero-bg-shape-14"></div>
+        <div className="hero-bg-shape hero-bg-shape-15"></div>
+        <div className="hero-bg-shape hero-bg-shape-16"></div>
+        <div className="hero-bg-shape hero-bg-shape-17"></div>
+        <div className="hero-bg-shape hero-bg-shape-18"></div>
+        <div className="hero-bg-shape hero-bg-shape-19"></div>
+        <div className="hero-bg-shape hero-bg-shape-20"></div>
+      </div>
 
+      {/* Hero Section - Full Screen Carousel */}
+      <section className="relative h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] overflow-hidden z-10">
         {/* Content */}
         <div className="relative h-full flex items-center justify-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -283,12 +294,6 @@ export default function LandingPage() {
               <div className="mb-8">
                 <div className="mb-6 flex justify-center">
                   <div className="relative w-64 h-64 md:w-80 md:h-80">
-                    {/* Elementos decorativos orgánicos en los vértices */}
-                    <div className="hero-decorative-blob hero-decorative-blob-1"></div>
-                    <div className="hero-decorative-blob hero-decorative-blob-2"></div>
-                    <div className="hero-decorative-blob hero-decorative-blob-3"></div>
-                    <div className="hero-decorative-blob hero-decorative-blob-4"></div>
-
                     {/* Imagen principal con transición */}
                     <div className="relative w-full h-full rounded-full overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -350,12 +355,6 @@ export default function LandingPage() {
               {/* Image Content - Right Side */}
               <div className="flex-1 lg:max-w-lg xl:max-w-xl">
                 <div className="relative w-full h-96 xl:h-[28rem] 2xl:h-[32rem]">
-                  {/* Elementos decorativos orgánicos en los vértices */}
-                  <div className="hero-decorative-blob hero-decorative-blob-1"></div>
-                  <div className="hero-decorative-blob hero-decorative-blob-2"></div>
-                  <div className="hero-decorative-blob hero-decorative-blob-3"></div>
-                  <div className="hero-decorative-blob hero-decorative-blob-4"></div>
-
                   {/* Imagen principal con transición */}
                   <div className="relative w-full h-full rounded-full overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -443,15 +442,7 @@ export default function LandingPage() {
       </section>
 
       {/* Why Choose Sancor Section */}
-      <section className="py-20 relative overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="hero-bg-shape hero-bg-shape-1"></div>
-          <div className="hero-bg-shape hero-bg-shape-2"></div>
-          <div className="hero-bg-shape hero-bg-shape-3"></div>
-          <div className="hero-bg-shape hero-bg-shape-4"></div>
-          <div className="hero-bg-shape hero-bg-shape-5"></div>
-        </div>
+      <section className="py-20 relative overflow-hidden z-10">
         <div
           id="why-choose-sancor"
           data-scroll-animation
@@ -515,14 +506,7 @@ export default function LandingPage() {
       </section>
 
       {/* How it Works Section */}
-      <section className="py-20 relative overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="hero-bg-shape hero-bg-shape-1"></div>
-          <div className="hero-bg-shape hero-bg-shape-2"></div>
-          <div className="hero-bg-shape hero-bg-shape-3"></div>
-          <div className="hero-bg-shape hero-bg-shape-4"></div>
-        </div>
+      <section className="py-20 relative overflow-hidden z-10">
         <div
           id="how-it-works"
           data-scroll-animation
@@ -571,14 +555,7 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 relative overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="hero-bg-shape hero-bg-shape-1"></div>
-          <div className="hero-bg-shape hero-bg-shape-2"></div>
-          <div className="hero-bg-shape hero-bg-shape-4"></div>
-          <div className="hero-bg-shape hero-bg-shape-5"></div>
-        </div>
+      <section className="py-20 relative overflow-hidden z-10">
         <div
           id="faq-section"
           data-scroll-animation
@@ -621,14 +598,7 @@ export default function LandingPage() {
       </section>
 
       {/* Contact Form Section */}
-      <section id="contact-form" className="py-20 relative overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="hero-bg-shape hero-bg-shape-1"></div>
-          <div className="hero-bg-shape hero-bg-shape-2"></div>
-          <div className="hero-bg-shape hero-bg-shape-3"></div>
-          <div className="hero-bg-shape hero-bg-shape-5"></div>
-        </div>
+      <section id="contact-form" className="py-20 relative overflow-hidden z-10">
         <div
           id="contact-form-section"
           data-scroll-animation
