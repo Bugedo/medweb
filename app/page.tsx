@@ -175,7 +175,7 @@ export default function LandingPage() {
       title: 'Planes empresariales para tu equipo',
       subtitle:
         'Cobertura médica integral para empresas. Protege a tus empleados con los mejores planes corporativos del mercado.',
-      image: '/images/hero/hero 1.jpg',
+      image: '/images/hero/hero1.jpg',
     },
   ];
 
