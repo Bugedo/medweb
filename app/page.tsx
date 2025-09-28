@@ -151,31 +151,31 @@ export default function LandingPage() {
   const heroSlides = [
     {
       id: 1,
-      title: 'Tu familia protegida desde el día uno',
-      subtitle:
-        'Cobertura médica completa sin carencias. Acceso inmediato a la mejor atención médica del país.',
-      image: '/images/hero/hero1.jpg',
-    },
-    {
-      id: 2,
-      title: 'Emergencias cubiertas 24/7',
-      subtitle:
-        'Tranquilidad total para tu familia. Emergencias médicas resueltas al instante, sin esperas ni complicaciones.',
-      image: '/images/hero/hero2.jpg',
-    },
-    {
-      id: 3,
       title: 'Planes para toda la familia',
       subtitle:
         'Cobertura completa para vos y tus seres queridos. Protección médica integral para cada miembro de tu familia.',
       image: '/images/hero/hero3.jpg',
     },
     {
-      id: 4,
+      id: 2,
       title: 'Más de 200.000 profesionales',
       subtitle:
         'La red médica más amplia del país. Especialistas de todas las áreas disponibles para tu familia.',
       image: '/images/hero/hero4.jpg',
+    },
+    {
+      id: 3,
+      title: 'Emergencias cubiertas 24/7',
+      subtitle:
+        'Tranquilidad total para tu familia. Emergencias médicas resueltas al instante, sin esperas ni complicaciones.',
+      image: '/images/hero/hero2.jpg',
+    },
+    {
+      id: 4,
+      title: 'Planes empresariales para tu equipo',
+      subtitle:
+        'Cobertura médica integral para empresas. Protege a tus empleados con los mejores planes corporativos del mercado.',
+      image: '/images/hero/hero 1.jpg',
     },
   ];
 
@@ -753,12 +753,12 @@ export default function LandingPage() {
                 />
               </div>
               <div>
-                <Image 
-                  src="/images/sancor.png" 
-                  alt="Sancor Salud" 
+                <Image
+                  src="/images/sancor.png"
+                  alt="Sancor Salud"
                   width={120}
                   height={48}
-                  className="h-12 w-auto" 
+                  className="h-12 w-auto"
                 />
               </div>
             </div>
