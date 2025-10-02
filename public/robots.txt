@@ -11,3 +11,12 @@ Disallow: /api/
 # Allow important pages
 Allow: /
 Allow: /preficha
+
+# Crawl-delay for all bots
+Crawl-delay: 1
+
+# Google Bot specific
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
