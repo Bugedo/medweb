@@ -26,29 +26,38 @@ export async function POST(request: NextRequest) {
 
     // Parsear datos del formulario
     const body = await request.json();
-    const { nombre, localidad, dni, telefono, email } = body;
+    const { nombre, localidad, telefono, email, observaciones } = body;
 
     // Validar datos requeridos
-    if (!nombre || !localidad || !dni || !telefono || !email) {
+    if (!nombre || !localidad || !telefono) {
       return NextResponse.json(
-        { success: false, error: 'Todos los campos son requeridos' },
+        { success: false, error: 'Los campos nombre, localidad y teléfono son requeridos' },
         { status: 400 },
       );
     }
 
-    // Validar formato de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { success: false, error: 'Formato de email inválido' },
-        { status: 400 },
-      );
+    // Validar formato de email si se proporciona
+    if (email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return NextResponse.json(
+          { success: false, error: 'Formato de email inválido' },
+          { status: 400 },
+        );
+      }
     }
 
     // Validar longitud de campos
-    if (nombre.length > 100 || localidad.length > 100 || dni.length > 20 || telefono.length > 20) {
+    if (nombre.length > 100 || localidad.length > 100 || telefono.length > 20) {
       return NextResponse.json(
         { success: false, error: 'Uno o más campos exceden la longitud máxima permitida' },
+        { status: 400 },
+      );
+    }
+
+    if (observaciones && observaciones.length > 500) {
+      return NextResponse.json(
+        { success: false, error: 'Las observaciones no pueden exceder 500 caracteres' },
         { status: 400 },
       );
     }
@@ -57,9 +66,9 @@ export async function POST(request: NextRequest) {
     const result = await saveContact({
       nombre: nombre.trim(),
       localidad: localidad.trim(),
-      dni: dni.trim(),
       telefono: telefono.trim(),
-      email: email.trim().toLowerCase(),
+      email: email ? email.trim().toLowerCase() : null,
+      observaciones: observaciones ? observaciones.trim() : null,
     });
 
     if (result.success) {

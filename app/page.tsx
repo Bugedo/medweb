@@ -14,15 +14,20 @@ import {
   Smartphone,
   Facebook,
   Instagram,
+  Video,
+  CreditCard,
+  Settings,
+  Glasses,
+  Phone,
+  Smile,
 } from 'lucide-react';
-import Header from './components/Header';
 
 interface ContactData {
   nombre: string;
   localidad: string;
-  dni: string;
   telefono: string;
   email: string;
+  observaciones: string;
 }
 
 // Hook para animaciones de scroll
@@ -63,16 +68,18 @@ export default function LandingPage() {
   const [contactData, setContactData] = useState<ContactData>({
     nombre: '',
     localidad: '',
-    dni: '',
     telefono: '',
     email: '',
+    observaciones: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
 
   // Contact form handlers
-  const handleContactInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleContactInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setContactData((prev) => ({
       ...prev,
@@ -90,9 +97,7 @@ export default function LandingPage() {
     if (
       !contactData.nombre.trim() ||
       !contactData.localidad.trim() ||
-      !contactData.dni.trim() ||
-      !contactData.telefono.trim() ||
-      !contactData.email.trim()
+      !contactData.telefono.trim()
     ) {
       setSubmitStatus('error');
       setSubmitMessage('Todos los campos son requeridos.');
@@ -126,9 +131,9 @@ export default function LandingPage() {
         setContactData({
           nombre: '',
           localidad: '',
-          dni: '',
           telefono: '',
           email: '',
+          observaciones: '',
         });
       } else {
         setSubmitStatus('error');
@@ -151,38 +156,46 @@ export default function LandingPage() {
   const heroSlides = [
     {
       id: 1,
-      title: 'Planes para toda la familia',
-      subtitle:
-        'Cobertura completa para vos y tus seres queridos. Protección médica integral para cada miembro de tu familia.',
-      image: '/images/hero/hero3.jpg',
+      title: '50% DE DESCUENTO EN TODOS LOS PLANES',
+      subtitle: '',
+      image: '/images/hero/heronuevafamilia.jpg',
+      isPromo: true,
+      subtitle2: '',
     },
     {
       id: 2,
-      title: 'Más de 200.000 profesionales',
-      subtitle:
-        'La red médica más amplia del país. Especialistas de todas las áreas disponibles para tu familia.',
+      title: 'Más de 200.000',
+      title2: 'profesionales',
+      subtitle: 'La red médica más amplia del país',
+      subtitle2: '',
       image: '/images/hero/hero4.jpg',
+      isSpecial: true,
     },
     {
       id: 3,
-      title: 'Emergencias cubiertas 24/7',
-      subtitle:
-        'Tranquilidad total para tu familia. Emergencias médicas resueltas al instante, sin esperas ni complicaciones.',
+      title: 'EMERGENCIAS',
+      title2: 'CUBIERTAS',
+      subtitle: '24/7',
+      subtitle2: 'Tranquilidad total para tu familia',
       image: '/images/hero/hero2.jpg',
+      isEmergency: true,
     },
     {
       id: 4,
-      title: 'Planes empresariales para tu equipo',
-      subtitle:
-        'Cobertura médica integral para empresas. Protege a tus empleados con los mejores planes corporativos del mercado.',
+      title: 'Planes',
+      title2: 'Empresariales',
+      title3: 'para tu equipo',
+      subtitle: 'Protegemos a tus empleados',
+      subtitle2: '',
       image: '/images/hero/hero1.jpg',
+      isCorporate: true,
     },
   ];
 
   const steps = [
     {
       number: '01',
-      title: 'Cotizá tu plan',
+      title: 'Nosotros te contactamos',
       description:
         'Completá nuestro formulario en segundos y recibí una cotización personalizada al instante. Sin compromisos, sin esperas.',
       icon: '/images/benefits/1.svg',
@@ -235,7 +248,7 @@ export default function LandingPage() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
+    }, 7000);
     return () => clearInterval(interval);
   }, [heroSlides.length]);
 
@@ -262,9 +275,6 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen text-white hero-background">
-      {/* Header */}
-      <Header />
-
       {/* Global Decorative Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="hero-bg-shape hero-bg-shape-5"></div>
@@ -285,162 +295,512 @@ export default function LandingPage() {
         <div className="hero-bg-shape hero-bg-shape-20"></div>
       </div>
 
+      {/* Header con logo Sancor */}
+      <header
+        className="w-full relative z-30"
+        style={{ background: 'linear-gradient(to right, #0c369c 0%, #0c369c 100%)' }}
+      >
+        <div className="flex items-center justify-center">
+          <Image
+            src="/images/sancorblue2.jpg"
+            alt="Sancor Salud"
+            width={500}
+            height={200}
+            className="h-32 md:h-40 w-auto block"
+            priority
+          />
+        </div>
+      </header>
+
       {/* Hero Section - Full Screen Carousel */}
-      <section className="relative h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] overflow-hidden z-10">
+      <section className="relative h-[calc(100vh-8rem)] md:h-[calc(100vh-10rem)] overflow-hidden z-10">
+        {/* Background Images - Full Screen con crossfade */}
+        <div className="absolute inset-0 z-0">
+          {heroSlides.map((slide, index) => (
+            <div
+              key={`slide-${index}`}
+              className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+              style={{
+                opacity: index === currentSlide ? 1 : 0,
+                zIndex: index === currentSlide ? 1 : 0,
+              }}
+            >
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                className={`object-cover md:scale-100 ${
+                  slide.image.includes('hero1')
+                    ? 'scale-110 object-[center_50%] md:object-[center_35%]'
+                    : slide.image.includes('hero2')
+                      ? 'scale-125 object-[60%_15%] md:scale-100 md:object-[60%_30%]'
+                      : slide.image.includes('heronuevafamilia')
+                        ? 'scale-110 object-[60%_40%] md:scale-90 md:object-[60%_60%]'
+                        : 'scale-110'
+                }`}
+                style={{
+                  objectPosition: slide.image.includes('hero4')
+                    ? 'center 20%'
+                    : slide.image.includes('hero2')
+                      ? undefined
+                      : slide.image.includes('heronuevafamilia')
+                        ? undefined
+                        : slide.image.includes('hero1')
+                          ? undefined
+                          : 'center center',
+                }}
+                priority={index === 0}
+              />
+              {/* Blue Overlay */}
+              <div
+                className="absolute inset-0"
+                style={{ backgroundColor: 'rgba(12, 54, 156, 0.35)' }}
+              ></div>
+            </div>
+          ))}
+        </div>
+
         {/* Content */}
-        <div className="relative h-full flex items-center justify-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Mobile Layout (centered) */}
-            <div className="block lg:hidden text-center">
-              <div className="mb-8">
-                <div className="mb-6 flex justify-center">
-                  <div className="relative w-64 h-64 md:w-80 md:h-80">
-                    {/* Imagen principal con transición */}
-                    <div className="relative w-full h-full rounded-full overflow-hidden">
-                      <Image
-                        key={`image-${currentSlide}`}
-                        src={heroSlides[currentSlide].image}
-                        alt={heroSlides[currentSlide].title}
-                        width={320}
-                        height={320}
-                        className="w-full h-full object-cover hero-image-super-oval relative z-10 hero-image-fade"
+        <div
+          className={`relative h-full flex justify-center z-10 ${
+            heroSlides[currentSlide].isPromo || heroSlides[currentSlide].isCorporate
+              ? 'items-start md:items-center pt-12 md:pt-0'
+              : 'items-center'
+          }`}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            {heroSlides[currentSlide].isPromo ? (
+              /* Layout especial para promoción */
+              <div
+                key={`promo-${currentSlide}`}
+                className="flex justify-center md:justify-start w-full"
+              >
+                {/* Toda la oferta - en la columna izquierda */}
+                <div className="flex flex-col items-start animate-fade-in-up mb-6 md:w-1/3 md:min-w-fit">
+                  {/* Caja 50% DE DESCUENTO */}
+                  <div
+                    className="inline-block px-6 py-4 shadow-2xl rounded-2xl"
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                    }}
+                  >
+                    <span
+                      className="text-3xl md:text-4xl xl:text-5xl font-black whitespace-nowrap"
+                      style={{
+                        color: '#0c369c',
+                      }}
+                    >
+                      50% DE DESCUENTO
+                    </span>
+                  </div>
+
+                  {/* Fila con "en todos nuestros planes" y "+" */}
+                  <div className="flex items-center gap-0">
+                    {/* Caja en todos nuestros planes */}
+                    <div
+                      className="inline-block px-5 py-3 shadow-lg rounded-2xl"
+                      style={{
+                        backgroundColor: '#0c369c',
+                      }}
+                    >
+                      <span
+                        className="text-xl md:text-2xl xl:text-3xl font-bold whitespace-nowrap"
                         style={{
-                          WebkitMaskImage:
-                            'radial-gradient(ellipse 100% 70% at center, black 0%, black 55%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.4) 90%, rgba(0, 0, 0, 0.1) 98%, transparent 100%)',
-                          maskImage:
-                            'radial-gradient(ellipse 100% 70% at center, black 0%, black 55%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.4) 90%, rgba(0, 0, 0, 0.1) 98%, transparent 100%)',
+                          color: '#FFFFFF',
                         }}
-                      />
+                      >
+                        en todos nuestros planes
+                      </span>
+                    </div>
+
+                    {/* Caja + pegada */}
+                    <div
+                      className="inline-block px-5 py-3 shadow-lg rounded-2xl"
+                      style={{
+                        backgroundColor: '#00A86B',
+                      }}
+                    >
+                      <span
+                        className="text-xl md:text-2xl xl:text-3xl font-bold whitespace-nowrap"
+                        style={{
+                          color: '#FFFFFF',
+                        }}
+                      >
+                        +
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Segunda oferta: VALOR DEL PLAN CONGELADO + X 1 AÑO orientada a la derecha */}
+                  <div className="flex flex-col items-end self-stretch">
+                    {/* Caja VALOR DEL PLAN CONGELADO */}
+                    <div
+                      className="inline-block px-4 py-2 shadow-2xl rounded-2xl"
+                      style={{
+                        backgroundColor: '#FFFFFF',
+                      }}
+                    >
+                      <span
+                        className="text-xl md:text-2xl xl:text-3xl font-black whitespace-nowrap"
+                        style={{
+                          color: '#0c369c',
+                        }}
+                      >
+                        VALOR DEL PLAN CONGELADO
+                      </span>
+                    </div>
+
+                    {/* Caja X 1 AÑO - pegada debajo con su propio ancho */}
+                    <div
+                      className="inline-block px-3 py-2 shadow-lg rounded-2xl"
+                      style={{
+                        backgroundColor: '#0c369c',
+                      }}
+                    >
+                      <span
+                        className="text-base md:text-lg xl:text-xl font-bold whitespace-nowrap"
+                        style={{
+                          color: '#FFFFFF',
+                        }}
+                      >
+                        X 1 AÑO
+                      </span>
                     </div>
                   </div>
                 </div>
-
-                {/* Título con animación */}
-                <h1
-                  key={`title-${currentSlide}`}
-                  className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white animate-fade-in-up"
-                >
-                  {heroSlides[currentSlide].title}
-                </h1>
-
-                {/* Subtítulo con animación */}
-                <p
-                  key={`subtitle-${currentSlide}`}
-                  className="text-xl md:text-2xl mb-8 text-blue-100 animate-fade-in-up"
-                >
-                  {heroSlides[currentSlide].subtitle}
-                </p>
               </div>
-            </div>
-
-            {/* Desktop Layout (text left, image right) */}
-            <div className="hidden lg:flex lg:items-center lg:justify-between lg:gap-12">
-              {/* Text Content - Left Side */}
-              <div className="flex-1 lg:max-w-2xl">
-                {/* Título con animación */}
-                <h1
-                  key={`title-${currentSlide}`}
-                  className="text-4xl xl:text-6xl 2xl:text-7xl font-bold mb-6 leading-tight text-white animate-fade-in-up text-left"
-                >
-                  {heroSlides[currentSlide].title}
-                </h1>
-
-                {/* Subtítulo con animación */}
-                <p
-                  key={`subtitle-${currentSlide}`}
-                  className="text-xl xl:text-2xl 2xl:text-3xl mb-8 text-blue-100 animate-fade-in-up text-left"
-                >
-                  {heroSlides[currentSlide].subtitle}
-                </p>
-              </div>
-
-              {/* Image Content - Right Side */}
-              <div className="flex-1 lg:max-w-lg xl:max-w-xl">
-                <div className="relative w-full h-96 xl:h-[28rem] 2xl:h-[32rem]">
-                  {/* Imagen principal con transición */}
-                  <div className="relative w-full h-full rounded-full overflow-hidden">
-                    <Image
-                      key={`image-${currentSlide}`}
-                      src={heroSlides[currentSlide].image}
-                      alt={heroSlides[currentSlide].title}
-                      width={512}
-                      height={512}
-                      className="w-full h-full object-cover hero-image-super-oval relative z-10 hero-image-fade"
+            ) : heroSlides[currentSlide].isSpecial ? (
+              /* Layout especial para slides con title2 */
+              <div
+                key={`special-${currentSlide}`}
+                className="flex flex-col items-center md:items-start"
+              >
+                <div className="flex flex-col items-start animate-fade-in-up gap-0">
+                  {/* Título principal con caja blanca */}
+                  <div
+                    className="inline-block px-6 py-4 shadow-2xl rounded-2xl"
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                    }}
+                  >
+                    <span
+                      key={`title-${currentSlide}`}
+                      className="text-3xl md:text-4xl xl:text-5xl font-black"
                       style={{
-                        WebkitMaskImage:
-                          'radial-gradient(ellipse 100% 70% at center, black 0%, black 55%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.4) 90%, rgba(0, 0, 0, 0.1) 98%, transparent 100%)',
-                        maskImage:
-                          'radial-gradient(ellipse 100% 70% at center, black 0%, black 55%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.4) 90%, rgba(0, 0, 0, 0.1) 98%, transparent 100%)',
+                        color: '#0c369c',
                       }}
-                    />
+                    >
+                      {heroSlides[currentSlide].title}
+                    </span>
+                  </div>
+
+                  {/* Segunda parte del título con caja azul y más pequeño */}
+                  {heroSlides[currentSlide].title2 && (
+                    <div
+                      className="inline-block px-5 py-3 shadow-lg rounded-2xl"
+                      style={{
+                        backgroundColor: '#0c369c',
+                      }}
+                    >
+                      <span
+                        className="text-2xl md:text-3xl xl:text-4xl font-bold"
+                        style={{
+                          color: '#FFFFFF',
+                        }}
+                      >
+                        {heroSlides[currentSlide].title2}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Grupo de subtítulos orientados a la derecha - limitado al ancho del título */}
+                  <div className="flex flex-col items-end gap-0 w-full">
+                    {/* Primer subtítulo con caja verde */}
+                    {heroSlides[currentSlide].subtitle && (
+                      <div
+                        className="px-4 py-2 shadow-lg rounded-2xl"
+                        style={{
+                          backgroundColor: '#00A86B',
+                          maxWidth: '100%',
+                        }}
+                      >
+                        <span
+                          key={`subtitle-${currentSlide}`}
+                          className="text-base md:text-lg xl:text-xl font-semibold"
+                          style={{
+                            color: '#FFFFFF',
+                          }}
+                        >
+                          {heroSlides[currentSlide].subtitle}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Segundo subtítulo con caja azul */}
+                    {'subtitle2' in heroSlides[currentSlide] &&
+                      heroSlides[currentSlide].subtitle2 && (
+                        <div
+                          className="px-4 py-2 shadow-lg rounded-2xl"
+                          style={{
+                            backgroundColor: '#0c369c',
+                            maxWidth: '100%',
+                          }}
+                        >
+                          <span
+                            className="text-base md:text-lg xl:text-xl font-semibold"
+                            style={{
+                              color: '#FFFFFF',
+                            }}
+                          >
+                            {heroSlides[currentSlide].subtitle2}
+                          </span>
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* CTA Button - Centered for all layouts */}
-            <div className="text-center mt-8 lg:mt-12 relative z-50">
-              <button
-                onClick={() => {
-                  document.getElementById('contact-form')?.scrollIntoView({
-                    behavior: 'smooth',
-                  });
-                }}
-                className="cta-button inline-block px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            ) : heroSlides[currentSlide].isEmergency ? (
+              /* Layout especial para emergencias */
+              <div
+                key={`emergency-${currentSlide}`}
+                className="flex flex-col items-center md:items-start"
               >
-                Cotizá tu prepaga
-              </button>
-            </div>
+                <div className="flex flex-col items-start animate-fade-in-up gap-0 w-full md:w-auto">
+                  {/* Caja única con EMERGENCIAS y CUBIERTAS apiladas */}
+                  <div
+                    className="inline-block px-6 py-4 shadow-2xl rounded-2xl"
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                    }}
+                  >
+                    <div className="flex flex-col items-start">
+                      <span
+                        className="text-3xl md:text-4xl xl:text-5xl font-black"
+                        style={{
+                          color: '#0c369c',
+                        }}
+                      >
+                        {heroSlides[currentSlide].title}
+                      </span>
+                      {heroSlides[currentSlide].title2 && (
+                        <span
+                          className="text-3xl md:text-4xl xl:text-5xl font-black"
+                          style={{
+                            color: '#0c369c',
+                          }}
+                        >
+                          {heroSlides[currentSlide].title2}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 24/7 con caja verde debajo, alineado a la derecha del contenedor */}
+                  <div className="flex justify-end w-full">
+                    {heroSlides[currentSlide].subtitle && (
+                      <div
+                        className="inline-block px-6 py-4 shadow-2xl rounded-2xl"
+                        style={{
+                          backgroundColor: '#00A86B',
+                        }}
+                      >
+                        <span
+                          className="text-4xl md:text-5xl xl:text-6xl font-black"
+                          style={{
+                            color: '#FFFFFF',
+                          }}
+                        >
+                          {heroSlides[currentSlide].subtitle}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Subtítulo con caja azul */}
+                  {'subtitle2' in heroSlides[currentSlide] &&
+                    heroSlides[currentSlide].subtitle2 && (
+                      <div
+                        className="inline-block px-5 py-3 shadow-lg rounded-2xl max-w-2xl"
+                        style={{
+                          backgroundColor: '#0c369c',
+                        }}
+                      >
+                        <span
+                          className="text-lg md:text-xl xl:text-2xl font-semibold"
+                          style={{
+                            color: '#FFFFFF',
+                          }}
+                        >
+                          {heroSlides[currentSlide].subtitle2}
+                        </span>
+                      </div>
+                    )}
+                </div>
+              </div>
+            ) : heroSlides[currentSlide].isCorporate ? (
+              /* Layout especial para planes empresariales */
+              <div
+                key={`corporate-${currentSlide}`}
+                className="flex flex-col items-center md:items-start"
+              >
+                <div className="flex flex-col items-start animate-fade-in-up gap-0 w-full md:w-auto">
+                  {/* Caja blanca con Planes y Empresariales */}
+                  <div
+                    className="inline-block px-6 py-4 shadow-2xl rounded-2xl"
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                    }}
+                  >
+                    <div className="flex flex-col items-start">
+                      <span
+                        className="text-3xl md:text-4xl xl:text-5xl font-black"
+                        style={{
+                          color: '#0c369c',
+                        }}
+                      >
+                        {heroSlides[currentSlide].title}
+                      </span>
+                      {heroSlides[currentSlide].title2 && (
+                        <span
+                          className="text-3xl md:text-4xl xl:text-5xl font-black"
+                          style={{
+                            color: '#0c369c',
+                          }}
+                        >
+                          {heroSlides[currentSlide].title2}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* "para tu equipo" con caja verde orientada a la derecha */}
+                  <div className="flex justify-end w-full">
+                    {'title3' in heroSlides[currentSlide] && heroSlides[currentSlide].title3 && (
+                      <div
+                        className="inline-block px-5 py-3 shadow-lg rounded-2xl"
+                        style={{
+                          backgroundColor: '#00A86B',
+                        }}
+                      >
+                        <span
+                          className="text-2xl md:text-3xl xl:text-4xl font-bold"
+                          style={{
+                            color: '#FFFFFF',
+                          }}
+                        >
+                          {heroSlides[currentSlide].title3}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Subtítulo con caja azul */}
+                  {heroSlides[currentSlide].subtitle && (
+                    <div
+                      className="inline-block px-5 py-3 shadow-lg rounded-2xl max-w-2xl"
+                      style={{
+                        backgroundColor: '#0c369c',
+                      }}
+                    >
+                      <span
+                        className="text-lg md:text-xl xl:text-2xl font-semibold"
+                        style={{
+                          color: '#FFFFFF',
+                        }}
+                      >
+                        {heroSlides[currentSlide].subtitle}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Segundo subtítulo con caja blanca */}
+                  {'subtitle2' in heroSlides[currentSlide] &&
+                    heroSlides[currentSlide].subtitle2 && (
+                      <div
+                        className="inline-block px-5 py-3 shadow-lg rounded-2xl max-w-2xl"
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                        }}
+                      >
+                        <span
+                          className="text-lg md:text-xl xl:text-2xl font-semibold"
+                          style={{
+                            color: '#0c369c',
+                          }}
+                        >
+                          {heroSlides[currentSlide].subtitle2}
+                        </span>
+                      </div>
+                    )}
+                </div>
+              </div>
+            ) : (
+              /* Layout estilizado para otros slides */
+              <div
+                key={`default-${currentSlide}`}
+                className="flex flex-col items-center md:items-start"
+              >
+                <div className="flex flex-col items-start animate-fade-in-up gap-4">
+                  {/* Título con caja estilizada */}
+                  <div
+                    className="inline-block px-6 py-4 shadow-2xl rounded-2xl"
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                    }}
+                  >
+                    <span
+                      key={`title-${currentSlide}`}
+                      className="text-3xl md:text-4xl xl:text-5xl font-black"
+                      style={{
+                        color: '#0c369c',
+                      }}
+                    >
+                      {heroSlides[currentSlide].title}
+                    </span>
+                  </div>
+
+                  {/* Subtítulo con caja estilizada */}
+                  {heroSlides[currentSlide].subtitle && (
+                    <div
+                      className="inline-block px-5 py-3 shadow-lg rounded-2xl max-w-2xl"
+                      style={{
+                        backgroundColor: '#0c369c',
+                      }}
+                    >
+                      <span
+                        key={`subtitle-${currentSlide}`}
+                        className="text-lg md:text-xl xl:text-2xl font-semibold"
+                        style={{
+                          color: '#FFFFFF',
+                        }}
+                      >
+                        {heroSlides[currentSlide].subtitle}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Navigation Arrows */}
-        <button
-          onClick={prevSlide}
-          disabled={isAnimating}
-          className={`absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm ${
-            isAnimating ? 'opacity-50 pointer-events-none' : ''
-          }`}
-          aria-label="Slide anterior"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-
-        <button
-          onClick={nextSlide}
-          disabled={isAnimating}
-          className={`absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm ${
-            isAnimating ? 'opacity-50 pointer-events-none' : ''
-          }`}
-          aria-label="Siguiente slide"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-
-        {/* Slide Indicators */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide
-                  ? 'bg-blue-300 scale-125'
-                  : 'bg-blue-300/50 hover:bg-blue-300/75'
-              } ${isAnimating ? 'pointer-events-none' : ''}`}
-              aria-label={`Ir al slide ${index + 1}`}
-              disabled={isAnimating}
-            />
-          ))}
+        {/* Botón al fondo del hero - siempre centrado */}
+        <div className="absolute bottom-8 left-1/2 z-50 cta-bounce">
+          <button
+            onClick={() => {
+              document.getElementById('contact-form')?.scrollIntoView({
+                behavior: 'smooth',
+              });
+            }}
+            className="inline-block px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            style={{
+              backgroundColor: '#00A86B',
+              color: '#FFFFFF',
+              border: '3px solid #FFFFFF',
+            }}
+          >
+            QUIERO ASOCIARME
+          </button>
         </div>
       </section>
 
@@ -452,57 +812,181 @@ export default function LandingPage() {
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative scroll-fade-in-up ${visibleElements.has('why-choose-sancor') ? 'visible' : ''}`}
         >
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              ¿Por qué elegir Sancor?
-            </h2>
-            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
-              Sancor Salud es la prepaga más confiable del país, con más de 25 años de experiencia
-              cuidando a las familias argentinas
-            </p>
+            {/* Título estilizado con cajas */}
+            <div className="flex flex-col items-center gap-2 mb-6">
+              <div
+                className="inline-block px-8 py-4 shadow-2xl rounded-2xl"
+                style={{ backgroundColor: '#FFFFFF' }}
+              >
+                <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#0c369c' }}>
+                  ¿Por qué elegir SanCor Salud?
+                </h2>
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Sancor Benefit 1 */}
-            <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="flex justify-center mb-4">
-                <Trophy className="w-12 h-12 text-sky-700" />
+          {/* Layout: Big box + 4 small boxes */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Big Box - Left side with 800.000 destacado + 3 razones */}
+            <div className="group relative">
+              <div
+                className="bg-gradient-to-br from-white to-sky-50 border-2 rounded-2xl p-8 md:p-10 hover:shadow-2xl transition-all duration-300 h-full flex flex-col"
+                style={{ borderColor: '#00A86B' }}
+              >
+                {/* 800.000 afiliados destacado arriba */}
+                <div className="text-center mb-8">
+                  <div
+                    className="w-24 h-24 mx-auto mb-6 flex items-center justify-center rounded-full transition-all duration-300"
+                    style={{ backgroundColor: '#0c369c' }}
+                  >
+                    <Trophy className="w-12 h-12 text-white" />
+                  </div>
+                  <h3 className="text-5xl md:text-6xl font-bold mb-4" style={{ color: '#0c369c' }}>
+                    800.000
+                  </h3>
+                  <p
+                    className="text-2xl md:text-3xl font-semibold mb-4 px-4"
+                    style={{ color: '#0c369c' }}
+                  >
+                    afiliados en todo el país
+                  </p>
+                  <div
+                    className="w-20 h-1 rounded-full mx-auto"
+                    style={{ backgroundColor: '#0c369c' }}
+                  ></div>
+                </div>
+
+                {/* 2 razones adicionales en grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-auto">
+                  {/* Afiliación flexible */}
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="w-20 h-20 flex-shrink-0 flex items-center justify-center rounded-full transition-all duration-300"
+                      style={{ backgroundColor: '#0c369c' }}
+                    >
+                      <Users className="w-10 h-10 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h4
+                        className="text-xl md:text-2xl font-bold mb-2"
+                        style={{ color: '#0c369c' }}
+                      >
+                        Afiliación flexible
+                      </h4>
+                      <p className="text-base md:text-lg" style={{ color: '#0c369c' }}>
+                        Monotributo, empleado o particular
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* App Mobile */}
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="w-20 h-20 flex-shrink-0 flex items-center justify-center rounded-full transition-all duration-300"
+                      style={{ backgroundColor: '#0c369c' }}
+                    >
+                      <Smartphone className="w-10 h-10 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h4
+                        className="text-xl md:text-2xl font-bold mb-2"
+                        style={{ color: '#0c369c' }}
+                      >
+                        App Mobile
+                      </h4>
+                      <p className="text-base md:text-lg" style={{ color: '#0c369c' }}>
+                        Gestioná todo desde tu celular
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold text-sky-700 mb-3">Líder del mercado</h3>
-              <p className="text-sky-700">
-                Más de 1.200.000 afiliados confían en nosotros en todo el país
-              </p>
             </div>
 
-            {/* Sancor Benefit 2 */}
-            <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="flex justify-center mb-4">
-                <Hospital className="w-12 h-12 text-sky-700" />
+            {/* 4 Small Boxes - Right side in 2x2 grid (Benefits) */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Beneficio 1: Consultas médicas virtuales */}
+              <div className="group relative">
+                <div
+                  className="bg-gradient-to-br from-white to-sky-50 border-2 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 h-full flex flex-col items-center justify-center text-center"
+                  style={{ borderColor: '#00A86B' }}
+                >
+                  <div
+                    className="w-24 h-24 mx-auto mb-4 flex items-center justify-center rounded-full transition-all duration-300"
+                    style={{ backgroundColor: '#0c369c' }}
+                  >
+                    <Video className="w-12 h-12 text-white" />
+                  </div>
+                  <h3
+                    className="text-xl md:text-2xl font-bold leading-tight px-2"
+                    style={{ color: '#0c369c' }}
+                  >
+                    Consultas médicas virtuales
+                  </h3>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold text-sky-700 mb-3">Red propia</h3>
-              <p className="text-sky-700">
-                Red de centros médicos propios y prestadores en todo el país
-              </p>
-            </div>
 
-            {/* Sancor Benefit 3 */}
-            <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="flex justify-center mb-4">
-                <Shield className="w-12 h-12 text-sky-700" />
+              {/* Beneficio 2: Red de centros médicos */}
+              <div className="group relative">
+                <div
+                  className="bg-gradient-to-br from-white to-sky-50 border-2 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 h-full flex flex-col items-center justify-center text-center"
+                  style={{ borderColor: '#00A86B' }}
+                >
+                  <div
+                    className="w-24 h-24 mx-auto mb-4 flex items-center justify-center rounded-full transition-all duration-300"
+                    style={{ backgroundColor: '#0c369c' }}
+                  >
+                    <Hospital className="w-12 h-12 text-white" />
+                  </div>
+                  <h3
+                    className="text-xl md:text-2xl font-bold leading-tight px-2"
+                    style={{ color: '#0c369c' }}
+                  >
+                    +5.000 centros médicos
+                  </h3>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold text-sky-700 mb-3">Cobertura total</h3>
-              <p className="text-sky-700">
-                Emergencias 24/7, internación, cirugías y especialidades completas
-              </p>
-            </div>
 
-            {/* Sancor Benefit 4 */}
-            <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="flex justify-center mb-4">
-                <Smartphone className="w-12 h-12 text-sky-700" />
+              {/* Beneficio 3: Descuentos en óptica */}
+              <div className="group relative">
+                <div
+                  className="bg-gradient-to-br from-white to-sky-50 border-2 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 h-full flex flex-col items-center justify-center text-center"
+                  style={{ borderColor: '#00A86B' }}
+                >
+                  <div
+                    className="w-24 h-24 mx-auto mb-4 flex items-center justify-center rounded-full transition-all duration-300"
+                    style={{ backgroundColor: '#0c369c' }}
+                  >
+                    <Glasses className="w-12 h-12 text-white" />
+                  </div>
+                  <h3
+                    className="text-xl md:text-2xl font-bold leading-tight px-2"
+                    style={{ color: '#0c369c' }}
+                  >
+                    Descuentos en óptica
+                  </h3>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold text-sky-700 mb-3">App móvil</h3>
-              <p className="text-sky-700">
-                Gestioná tu cobertura, turnos y consultas desde tu celular
-              </p>
+
+              {/* Beneficio 4: Ortodoncia cubierta hasta los 30 */}
+              <div className="group relative">
+                <div
+                  className="bg-gradient-to-br from-white to-sky-50 border-2 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 h-full flex flex-col items-center justify-center text-center"
+                  style={{ borderColor: '#00A86B' }}
+                >
+                  <div
+                    className="w-24 h-24 mx-auto mb-4 flex items-center justify-center rounded-full transition-all duration-300"
+                    style={{ backgroundColor: '#0c369c' }}
+                  >
+                    <Smile className="w-12 h-12 text-white" />
+                  </div>
+                  <h3
+                    className="text-xl md:text-2xl font-bold leading-tight px-2"
+                    style={{ color: '#0c369c' }}
+                  >
+                    Ortodoncia cubierta hasta los 30 años
+                  </h3>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -515,89 +999,48 @@ export default function LandingPage() {
           data-scroll-animation
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative scroll-fade-in-up ${visibleElements.has('how-it-works') ? 'visible' : ''}`}
         >
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Cómo funciona</h2>
-            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
-              En solo 3 pasos simples, tenés la cobertura que tu familia necesita
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {steps.map((step, index) => (
-              <div key={index} className="group relative">
-                {/* Card Container */}
-                <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 text-center hover:shadow-xl hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-2">
-                  {/* SVG Icon - Más grande */}
-                  <div className="w-32 h-32 mx-auto mb-8 flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-200 rounded-full group-hover:from-sky-200 group-hover:to-sky-300 transition-all duration-300">
-                    <Image
-                      src={step.icon}
-                      alt={`${step.title} icon`}
-                      width={80}
-                      height={80}
-                      className="w-20 h-20 object-contain"
-                    />
+          {/* Single box containing title and all 3 steps */}
+          <div className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 md:p-12 shadow-xl max-w-3xl mx-auto">
+            {/* Título */}
+            <div className="text-center mb-12">
+              <h2 className="text-5xl md:text-7xl font-black" style={{ color: '#0c369c' }}>
+                ¿Cómo funciona?
+              </h2>
+            </div>
+
+            {/* Steps */}
+            <div className="space-y-8">
+              {steps.map((step, index) => (
+                <div key={index} className="group flex items-center justify-center gap-6">
+                  {/* SVG Icon with number badge */}
+                  <div className="relative flex-shrink-0">
+                    <div className="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-200 rounded-full group-hover:from-sky-200 group-hover:to-sky-300 transition-all duration-300">
+                      <Image
+                        src={step.icon}
+                        alt={`${step.title} icon`}
+                        width={80}
+                        height={80}
+                        className="w-16 h-16 md:w-20 md:h-20 object-contain"
+                      />
+                    </div>
+                    {/* Number badge on SVG border */}
+                    <div
+                      className="absolute -top-2 -right-2 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold shadow-lg"
+                      style={{ backgroundColor: '#0c369c' }}
+                    >
+                      {step.number}
+                    </div>
                   </div>
 
-                  {/* Número con diseño mejorado */}
-                  <div className="absolute -top-4 -right-4 bg-gradient-to-r from-sky-600 to-sky-700 text-white w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg">
-                    {step.number}
-                  </div>
-
-                  {/* Contenido */}
-                  <div className="space-y-4">
-                    <h3 className="text-2xl font-bold text-sky-700 group-hover:text-sky-800 transition-colors duration-300">
+                  {/* Text content */}
+                  <div className="flex-1 text-center">
+                    <h3 className="text-2xl md:text-4xl font-black" style={{ color: '#0c369c' }}>
                       {step.title}
                     </h3>
-                    <p className="text-sky-700 leading-relaxed text-base">{step.description}</p>
                   </div>
-
-                  {/* Decorative element */}
-                  <div className="mt-6 w-16 h-1 bg-gradient-to-r from-sky-400 to-sky-600 rounded-full mx-auto group-hover:w-20 transition-all duration-300"></div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-20 relative overflow-hidden z-10">
-        <div
-          id="faq-section"
-          data-scroll-animation
-          className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative scroll-fade-in-up ${visibleElements.has('faq-section') ? 'visible' : ''}`}
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Preguntas Frecuentes</h2>
-            <p className="text-xl text-blue-200">
-              Resolvemos las dudas más comunes sobre nuestros planes
-            </p>
-          </div>
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl shadow-lg hover:shadow-xl hover:border-sky-200 transition-all duration-300"
-              >
-                <button
-                  className="w-full text-left p-6 focus:outline-none"
-                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                >
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-semibold text-sky-700">{faq.question}</h3>
-                    <span
-                      className={`text-2xl transition-transform duration-200 ${openFaq === index ? 'rotate-45' : ''}`}
-                    >
-                      +
-                    </span>
-                  </div>
-                </button>
-                {openFaq === index && (
-                  <div className="px-6 pb-6">
-                    <p className="text-sky-700">{faq.answer}</p>
-                  </div>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -609,22 +1052,32 @@ export default function LandingPage() {
           data-scroll-animation
           className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative scroll-fade-in-up ${visibleElements.has('contact-form-section') ? 'visible' : ''}`}
         >
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Dejanos tus datos</h2>
-            <p className="text-xl text-blue-200 max-w-2xl mx-auto">
-              Uno de nuestros asesores se pondrá en contacto para ayudarte a encontrar la cobertura
-              médica que mejor se adapte a vos.
-            </p>
-          </div>
-
           <form
             onSubmit={handleContactSubmit}
-            className="bg-gradient-to-br from-white to-sky-50 border-2 border-sky-100 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:border-sky-200 transition-all duration-300"
+            className="bg-gradient-to-br from-white to-sky-50 border-2 rounded-2xl p-8 md:p-12 shadow-xl hover:shadow-2xl transition-all duration-300"
+            style={{ borderColor: '#00A86B' }}
           >
+            {/* Título y Subtítulo dentro del formulario */}
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-black mb-4" style={{ color: '#0c369c' }}>
+                Dejanos tus datos
+              </h2>
+              <p
+                className="text-base md:text-lg font-semibold max-w-2xl mx-auto"
+                style={{ color: '#0c369c' }}
+              >
+                Uno de nuestros asesores se pondrá en contacto para ayudarte a encontrar la
+                cobertura médica que mejor se adapte a vos.
+              </p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Nombre y Apellido */}
               <div className="md:col-span-2">
-                <label htmlFor="nombre" className="block text-sm font-medium text-sky-700 mb-2">
+                <label
+                  htmlFor="nombre"
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: '#0c369c' }}
+                >
                   Nombre y Apellido *
                 </label>
                 <input
@@ -634,14 +1087,19 @@ export default function LandingPage() {
                   value={contactData.nombre}
                   onChange={handleContactInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder-sky-700"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  style={{ color: '#0c369c' }}
                   placeholder="Ingresá tu nombre completo"
                 />
               </div>
 
               {/* Localidad */}
               <div>
-                <label htmlFor="localidad" className="block text-sm font-medium text-sky-700 mb-2">
+                <label
+                  htmlFor="localidad"
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: '#0c369c' }}
+                >
                   Localidad *
                 </label>
                 <input
@@ -651,31 +1109,19 @@ export default function LandingPage() {
                   value={contactData.localidad}
                   onChange={handleContactInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder-sky-700"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  style={{ color: '#0c369c' }}
                   placeholder="Ciudad, Provincia"
-                />
-              </div>
-
-              {/* DNI */}
-              <div>
-                <label htmlFor="dni" className="block text-sm font-medium text-sky-700 mb-2">
-                  DNI *
-                </label>
-                <input
-                  type="text"
-                  id="dni"
-                  name="dni"
-                  value={contactData.dni}
-                  onChange={handleContactInputChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder-sky-700"
-                  placeholder="12345678"
                 />
               </div>
 
               {/* Teléfono */}
               <div>
-                <label htmlFor="telefono" className="block text-sm font-medium text-sky-700 mb-2">
+                <label
+                  htmlFor="telefono"
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: '#0c369c' }}
+                >
                   Teléfono *
                 </label>
                 <input
@@ -685,15 +1131,20 @@ export default function LandingPage() {
                   value={contactData.telefono}
                   onChange={handleContactInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder-sky-700"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  style={{ color: '#0c369c' }}
                   placeholder="+54 11 1234-5678"
                 />
               </div>
 
               {/* Correo electrónico */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-sky-700 mb-2">
-                  Correo electrónico *
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: '#0c369c' }}
+                >
+                  Correo electrónico (opcional)
                 </label>
                 <input
                   type="email"
@@ -701,11 +1152,32 @@ export default function LandingPage() {
                   name="email"
                   value={contactData.email}
                   onChange={handleContactInputChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder-sky-700"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                  style={{ color: '#0c369c' }}
                   placeholder="tu@email.com"
                 />
               </div>
+            </div>
+
+            {/* Observaciones */}
+            <div className="mt-6">
+              <label
+                htmlFor="observaciones"
+                className="block text-sm font-medium mb-2"
+                style={{ color: '#0c369c' }}
+              >
+                Observaciones (opcional)
+              </label>
+              <textarea
+                id="observaciones"
+                name="observaciones"
+                value={contactData.observaciones}
+                onChange={handleContactInputChange}
+                rows={4}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors resize-none"
+                style={{ color: '#0c369c' }}
+                placeholder="Dejanos cualquier comentario o consulta adicional..."
+              ></textarea>
             </div>
 
             {/* Status Message */}
@@ -737,65 +1209,293 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white py-8">
+      {/* SECCIÓN DE PRUEBA - ADORNOS DECORATIVOS */}
+      <section className="py-20 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Logos */}
-            <div className="space-y-6">
-              <div>
-                <Image
-                  src="/images/prepagaargentina.png"
-                  alt="Prepaga Argentina"
-                  width={200}
-                  height={64}
-                  className="h-16 w-auto"
-                />
+          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: '#0c369c' }}>
+            Prueba de Adornos Decorativos
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Opción 1: Círculos flotantes */}
+            <div
+              className="relative h-64 bg-white rounded-2xl border-2 overflow-hidden"
+              style={{ borderColor: '#00A86B' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-full">
+                <div
+                  className="absolute top-[-50px] left-[-50px] w-40 h-40 rounded-full opacity-20"
+                  style={{ backgroundColor: '#0c369c' }}
+                ></div>
+                <div
+                  className="absolute bottom-[-30px] right-[-30px] w-32 h-32 rounded-full opacity-20"
+                  style={{ backgroundColor: '#00A86B' }}
+                ></div>
+                <div
+                  className="absolute top-1/2 right-10 w-20 h-20 rounded-full opacity-10"
+                  style={{ backgroundColor: '#0c369c' }}
+                ></div>
               </div>
-              <div>
-                <Image
-                  src="/images/sancor.png"
-                  alt="Sancor Salud"
-                  width={120}
-                  height={48}
-                  className="h-12 w-auto"
-                />
+              <div className="relative z-10 flex items-center justify-center h-full">
+                <p className="text-lg font-semibold" style={{ color: '#0c369c' }}>
+                  Opción 1: Círculos Flotantes
+                </p>
               </div>
             </div>
 
-            {/* Contacto */}
-            <div>
-              <h4 className="text-lg font-semibold mb-4 text-sky-700">Contacto</h4>
-              <ul className="space-y-2 text-sky-700">
-                <li className="flex items-center">
-                  <span className="mr-2">📞</span>
-                  +54 351 381 7823
-                </li>
-                <li className="flex items-center">
-                  <span className="mr-2">🕒</span>
-                  Lun a Vie 8:00 - 18:00
-                </li>
-              </ul>
+            {/* Opción 2: Ondas suaves */}
+            <div
+              className="relative h-64 bg-white rounded-2xl border-2 overflow-hidden"
+              style={{ borderColor: '#00A86B' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-full">
+                <div
+                  className="absolute bottom-0 left-0 w-full h-24 opacity-10"
+                  style={{ backgroundColor: '#0c369c', clipPath: 'ellipse(150% 100% at 50% 100%)' }}
+                ></div>
+                <div
+                  className="absolute bottom-0 left-0 w-full h-32 opacity-10"
+                  style={{ backgroundColor: '#00A86B', clipPath: 'ellipse(120% 80% at 30% 100%)' }}
+                ></div>
+              </div>
+              <div className="relative z-10 flex items-center justify-center h-full">
+                <p className="text-lg font-semibold" style={{ color: '#0c369c' }}>
+                  Opción 2: Ondas Suaves
+                </p>
+              </div>
             </div>
 
-            {/* Redes Sociales */}
-            <div>
-              <h4 className="text-lg font-semibold mb-4 text-sky-700">Síguenos</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="text-sky-600 hover:text-sky-800 transition-colors">
-                  <Facebook className="w-8 h-8" />
-                </a>
-                <a href="#" className="text-sky-600 hover:text-sky-800 transition-colors">
-                  <Instagram className="w-8 h-8" />
-                </a>
+            {/* Opción 3: Círculos con blur */}
+            <div
+              className="relative h-64 bg-white rounded-2xl border-2 overflow-hidden"
+              style={{ borderColor: '#00A86B' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-full">
+                <div
+                  className="absolute top-[-60px] right-[-60px] w-48 h-48 rounded-full blur-3xl opacity-20"
+                  style={{ backgroundColor: '#0c369c' }}
+                ></div>
+                <div
+                  className="absolute bottom-[-60px] left-[-60px] w-48 h-48 rounded-full blur-3xl opacity-20"
+                  style={{ backgroundColor: '#00A86B' }}
+                ></div>
+              </div>
+              <div className="relative z-10 flex items-center justify-center h-full">
+                <p className="text-lg font-semibold" style={{ color: '#0c369c' }}>
+                  Opción 3: Blur Gradiente
+                </p>
+              </div>
+            </div>
+
+            {/* Opción 4: Puntos decorativos */}
+            <div
+              className="relative h-64 bg-white rounded-2xl border-2 overflow-hidden"
+              style={{ borderColor: '#00A86B' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-full">
+                {[...Array(20)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute rounded-full opacity-10"
+                    style={{
+                      backgroundColor: i % 2 === 0 ? '#0c369c' : '#00A86B',
+                      width: `${Math.random() * 20 + 10}px`,
+                      height: `${Math.random() * 20 + 10}px`,
+                      top: `${Math.random() * 100}%`,
+                      left: `${Math.random() * 100}%`,
+                    }}
+                  ></div>
+                ))}
+              </div>
+              <div className="relative z-10 flex items-center justify-center h-full">
+                <p className="text-lg font-semibold" style={{ color: '#0c369c' }}>
+                  Opción 4: Puntos Random
+                </p>
+              </div>
+            </div>
+
+            {/* Opción 5: Rayas diagonales */}
+            <div
+              className="relative h-64 bg-white rounded-2xl border-2 overflow-hidden"
+              style={{ borderColor: '#00A86B' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-full">
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(12, 54, 156, 0.05) 20px, rgba(12, 54, 156, 0.05) 40px)',
+                  }}
+                ></div>
+              </div>
+              <div className="relative z-10 flex items-center justify-center h-full">
+                <p className="text-lg font-semibold" style={{ color: '#0c369c' }}>
+                  Opción 5: Rayas Diagonales
+                </p>
+              </div>
+            </div>
+
+            {/* Opción 6: Círculos concéntricos */}
+            <div
+              className="relative h-64 bg-white rounded-2xl border-2 overflow-hidden"
+              style={{ borderColor: '#00A86B' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                <div
+                  className="absolute w-32 h-32 rounded-full border-4 opacity-10"
+                  style={{ borderColor: '#0c369c' }}
+                ></div>
+                <div
+                  className="absolute w-48 h-48 rounded-full border-4 opacity-10"
+                  style={{ borderColor: '#00A86B' }}
+                ></div>
+                <div
+                  className="absolute w-64 h-64 rounded-full border-4 opacity-10"
+                  style={{ borderColor: '#0c369c' }}
+                ></div>
+              </div>
+              <div className="relative z-10 flex items-center justify-center h-full">
+                <p className="text-lg font-semibold" style={{ color: '#0c369c' }}>
+                  Opción 6: Círculos Concéntricos
+                </p>
+              </div>
+            </div>
+
+            {/* Opción 7: Gradiente radial */}
+            <div
+              className="relative h-64 bg-white rounded-2xl border-2 overflow-hidden"
+              style={{ borderColor: '#00A86B' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-full">
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'radial-gradient(circle at 30% 30%, rgba(12, 54, 156, 0.15), transparent 50%)',
+                  }}
+                ></div>
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'radial-gradient(circle at 70% 70%, rgba(0, 168, 107, 0.15), transparent 50%)',
+                  }}
+                ></div>
+              </div>
+              <div className="relative z-10 flex items-center justify-center h-full">
+                <p className="text-lg font-semibold" style={{ color: '#0c369c' }}>
+                  Opción 7: Gradiente Radial
+                </p>
+              </div>
+            </div>
+
+            {/* Opción 8: Formas geométricas */}
+            <div
+              className="relative h-64 bg-white rounded-2xl border-2 overflow-hidden"
+              style={{ borderColor: '#00A86B' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-full">
+                <div
+                  className="absolute top-[-30px] right-[-30px] w-32 h-32 opacity-10 rotate-45"
+                  style={{ backgroundColor: '#0c369c' }}
+                ></div>
+                <div
+                  className="absolute bottom-[-40px] left-[-40px] w-40 h-40 rounded-full opacity-10"
+                  style={{ backgroundColor: '#00A86B' }}
+                ></div>
+                <div
+                  className="absolute top-1/2 left-1/4 w-24 h-24 opacity-10"
+                  style={{
+                    backgroundColor: '#0c369c',
+                    clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+                  }}
+                ></div>
+              </div>
+              <div className="relative z-10 flex items-center justify-center h-full">
+                <p className="text-lg font-semibold" style={{ color: '#0c369c' }}>
+                  Opción 8: Formas Geométricas
+                </p>
+              </div>
+            </div>
+
+            {/* Opción 9: Burbujas animadas */}
+            <div
+              className="relative h-64 bg-white rounded-2xl border-2 overflow-hidden"
+              style={{ borderColor: '#00A86B' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-full">
+                <div
+                  className="absolute top-10 left-10 w-16 h-16 rounded-full opacity-20 animate-pulse"
+                  style={{ backgroundColor: '#0c369c' }}
+                ></div>
+                <div
+                  className="absolute top-24 right-16 w-12 h-12 rounded-full opacity-20 animate-pulse"
+                  style={{ backgroundColor: '#00A86B', animationDelay: '0.5s' }}
+                ></div>
+                <div
+                  className="absolute bottom-16 left-20 w-20 h-20 rounded-full opacity-20 animate-pulse"
+                  style={{ backgroundColor: '#0c369c', animationDelay: '1s' }}
+                ></div>
+                <div
+                  className="absolute bottom-10 right-10 w-14 h-14 rounded-full opacity-20 animate-pulse"
+                  style={{ backgroundColor: '#00A86B', animationDelay: '1.5s' }}
+                ></div>
+              </div>
+              <div className="relative z-10 flex items-center justify-center h-full">
+                <p className="text-lg font-semibold" style={{ color: '#0c369c' }}>
+                  Opción 9: Burbujas Animadas
+                </p>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Copyright */}
-          <div className="border-t border-gray-200 mt-8 pt-4 text-center">
-            <p className="text-sky-700">
-              © 2025 Prepaga Argentina. Todos los derechos reservados.
+      {/* Pre-Footer */}
+      <div className="py-6 relative z-50" style={{ backgroundColor: '#0033a0' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-start gap-6">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Image
+                src="/images/sancorblue2.jpg"
+                alt="SanCor Salud"
+                width={150}
+                height={60}
+                className="h-12 w-auto"
+              />
+            </div>
+
+            {/* Legal Text */}
+            <div className="flex-1">
+              <p className="text-xs text-white leading-relaxed">
+                ASOCIACIÓN MUTUAL SANCOR SALUD inscripta en el Registro Nacional de Entidades de
+                Medicina Prepaga (R.N.E.M.P.) bajo el número 1137. Superintendencia de Servicios de
+                Salud - Órgano de Control de Obras Sociales y Entidades de Medicina Prepaga -
+                0800-222-SALUD (72583) - www.sssalud.gob.ar
+                <br />
+                25 de mayo 201. Sunchales, Santa Fe, Argentina.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-white py-3 border-t border-gray-200 relative z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Powered by */}
+          <div className="text-center">
+            <p className="text-sky-700 text-xs">
+              Powered by{' '}
+              <a
+                href="https://www.developingbridges.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold hover:text-sky-900 transition-colors underline"
+              >
+                Developing Bridges
+              </a>
             </p>
           </div>
         </div>

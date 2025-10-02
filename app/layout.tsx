@@ -1,11 +1,18 @@
 import '../styles/globals.css';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import { Roboto } from 'next/font/google';
+
+const roboto = Roboto({
+  weight: ['300', '400', '500', '700', '900'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
     default: 'Prepaga Argentina - Cobertura Médica Premium Sin Carencias',
-    template: '%s | Prepaga Argentina'
+    template: '%s | Prepaga Argentina',
   },
   description:
     'Prepaga Argentina ofrece la mejor cobertura médica para familias y empresas. Sin carencias, atención 24/7, más de 200.000 profesionales. Planes empresariales y familiares.',
@@ -19,7 +26,7 @@ export const metadata: Metadata = {
     'cobertura familiar',
     'sin carencias',
     'red médica',
-    'emergencias médicas'
+    'emergencias médicas',
   ],
   authors: [{ name: 'Prepaga Argentina' }],
   creator: 'Prepaga Argentina',
@@ -38,7 +45,8 @@ export const metadata: Metadata = {
     locale: 'es_AR',
     url: 'https://prepagaargentina.com',
     title: 'Prepaga Argentina - Cobertura Médica Premium Sin Carencias',
-    description: 'La mejor cobertura médica para tu familia. Sin carencias, atención 24/7 en todo el país.',
+    description:
+      'La mejor cobertura médica para tu familia. Sin carencias, atención 24/7 en todo el país.',
     siteName: 'Prepaga Argentina',
     images: [
       {
@@ -84,7 +92,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es">
+    <html lang="es" className={roboto.className}>
       <head>
         {/* Favicon para diferentes navegadores y dispositivos */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -99,47 +107,48 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#0ea5e9" />
         <meta name="msapplication-TileColor" content="#0ea5e9" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+
         {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Prepaga Argentina",
-              "description": "Cobertura médica premium para familias y empresas. Sin carencias, atención 24/7.",
-              "url": "https://prepagaargentina.com",
-              "logo": "https://prepagaargentina.com/images/prepagaargentina.png",
-              "image": "https://prepagaargentina.com/images/hero/hero3.jpg",
-              "telephone": "+54-11-1234-5678",
-              "email": "info@prepagaargentina.com",
-              "address": {
-                "@type": "PostalAddress",
-                "addressCountry": "AR",
-                "addressLocality": "Buenos Aires"
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Prepaga Argentina',
+              description:
+                'Cobertura médica premium para familias y empresas. Sin carencias, atención 24/7.',
+              url: 'https://prepagaargentina.com',
+              logo: 'https://prepagaargentina.com/images/prepagaargentina.png',
+              image: 'https://prepagaargentina.com/images/hero/hero3.jpg',
+              telephone: '+54-11-1234-5678',
+              email: 'info@prepagaargentina.com',
+              address: {
+                '@type': 'PostalAddress',
+                addressCountry: 'AR',
+                addressLocality: 'Buenos Aires',
               },
-              "sameAs": [
-                "https://www.facebook.com/prepagaargentina",
-                "https://www.instagram.com/prepagaargentina",
-                "https://www.linkedin.com/company/prepagaargentina"
+              sameAs: [
+                'https://www.facebook.com/prepagaargentina',
+                'https://www.instagram.com/prepagaargentina',
+                'https://www.linkedin.com/company/prepagaargentina',
               ],
-              "service": {
-                "@type": "Service",
-                "name": "Cobertura Médica",
-                "description": "Planes médicos para familias y empresas con cobertura nacional",
-                "provider": {
-                  "@type": "Organization",
-                  "name": "Prepaga Argentina"
+              service: {
+                '@type': 'Service',
+                name: 'Cobertura Médica',
+                description: 'Planes médicos para familias y empresas con cobertura nacional',
+                provider: {
+                  '@type': 'Organization',
+                  name: 'Prepaga Argentina',
                 },
-                "areaServed": "Argentina",
-                "availableChannel": {
-                  "@type": "ServiceChannel",
-                  "serviceUrl": "https://prepagaargentina.com",
-                  "serviceSmsNumber": "+54-11-1234-5678"
-                }
-              }
-            })
+                areaServed: 'Argentina',
+                availableChannel: {
+                  '@type': 'ServiceChannel',
+                  serviceUrl: 'https://prepagaargentina.com',
+                  serviceSmsNumber: '+54-11-1234-5678',
+                },
+              },
+            }),
           }}
         />
       </head>
@@ -154,13 +163,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           className="whatsapp-float animate-pulse"
           aria-label="Contactar por WhatsApp"
         >
-          <Image 
-            src="/images/whapp.png" 
-            alt="WhatsApp" 
-            width={60}
-            height={60}
-            priority
-          />
+          <Image src="/images/whapp.png" alt="WhatsApp" width={60} height={60} priority />
         </a>
       </body>
     </html>

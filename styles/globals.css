@@ -444,17 +444,17 @@
 
 /* CTA Button */
 .cta-button {
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  color: #1e3a8a;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
+  background: #00a86b;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 168, 107, 0.4);
   animation: cta-pulse 3s infinite;
-  border: 2px solid rgba(30, 58, 138, 0.2);
+  border: 3px solid #ffffff;
 }
 
 .cta-button:hover {
-  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-  color: #1e40af;
-  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.6);
+  background: #009159;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 168, 107, 0.6);
   transform: scale(1.05);
 }
 
@@ -464,15 +464,15 @@
 
 @keyframes cta-pulse {
   0% {
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 168, 107, 0.4);
   }
   50% {
     box-shadow:
-      0 4px 12px rgba(255, 255, 255, 0.8),
+      0 4px 12px rgba(0, 168, 107, 0.8),
       0 0 0 8px rgba(255, 255, 255, 0.1);
   }
   100% {
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 168, 107, 0.4);
   }
 }
 
@@ -524,31 +524,13 @@
 
 /* Hero Background */
 .hero-background {
-  background: linear-gradient(
-    135deg,
-    #1e3a8a 0%,
-    #1e40af 25%,
-    #1d4ed8 50%,
-    #2563eb 75%,
-    #1e40af 100%
-  );
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+  background: linear-gradient(to right, #0c369c 0%, #0c369c 100%);
 }
 
 /* Global Page Background */
 .page-background {
-  background: linear-gradient(
-    135deg,
-    #1e3a8a 0%,
-    #1e40af 25%,
-    #1d4ed8 50%,
-    #2563eb 75%,
-    #1e40af 100%
-  );
-  background-size: 400% 400%;
+  background: linear-gradient(to right, #0c369c 0%, #0c369c 100%);
   background-attachment: fixed;
-  animation: gradientShift 15s ease infinite;
   min-height: 100vh;
 }
 
@@ -708,6 +690,21 @@
 
 .whatsapp-float.animate-pulse {
   animation: whatsapp-pulse 2s infinite;
+}
+
+/* Animación de rebote para el botón CTA */
+@keyframes cta-bounce {
+  0%,
+  100% {
+    transform: translateY(0) translateX(-50%);
+  }
+  50% {
+    transform: translateY(-10px) translateX(-50%);
+  }
+}
+
+.cta-bounce {
+  animation: cta-bounce 2s ease-in-out infinite;
 }
 
 /* Responsive para móviles */

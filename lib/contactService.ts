@@ -8,9 +8,9 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export interface ContactData {
   nombre: string;
   localidad: string;
-  dni: string;
   telefono: string;
-  email: string;
+  email: string | null;
+  observaciones: string | null;
 }
 
 export async function saveContact(data: ContactData) {
@@ -20,9 +20,9 @@ export async function saveContact(data: ContactData) {
       .insert({
         nombre: data.nombre,
         localidad: data.localidad,
-        dni: data.dni,
         telefono: data.telefono,
         email: data.email,
+        observaciones: data.observaciones,
       })
       .select()
       .single();
