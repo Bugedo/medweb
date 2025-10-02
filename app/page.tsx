@@ -7,6 +7,7 @@ import Image from 'next/image';
 import HeroSection from './components/sections/HeroSection';
 import WhyChooseSancorSection from './components/sections/WhyChooseSancorSection';
 import HowItWorksSection from './components/sections/HowItWorksSection';
+import PlansSection from './components/sections/PlansSection';
 import ContactFormSection from './components/sections/ContactFormSection';
 import { heroSlides } from './components/sections/data';
 
@@ -198,6 +199,9 @@ export default function LandingPage() {
       {/* How it Works Section */}
       <HowItWorksSection visibleElements={visibleElements} />
 
+      {/* Plans Section */}
+      <PlansSection visibleElements={visibleElements} />
+
       {/* Contact Form Section */}
       <ContactFormSection
         visibleElements={visibleElements}
@@ -261,4 +265,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
