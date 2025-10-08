@@ -26,16 +26,16 @@ export default function ContactosTab({}: ContactosTabProps) {
   const loadContactos = useCallback(async () => {
     setContactosLoading(true);
     try {
-      const result = await getContactos(currentPage, 10, search, statusFilter);
+      const result = await getContactos(currentPage, 15, search, statusFilter);
       if (result.success && result.data) {
         setContactos(result.data);
         setTotal(result.total || 0);
         setContactosError('');
       } else {
-        setContactosError(result.error || 'Error al cargar contactos');
+        setContactosError(result.error || 'Error al cargar leads');
       }
     } catch (err) {
-      setContactosError('Error al cargar contactos');
+      setContactosError('Error al cargar leads');
     } finally {
       setContactosLoading(false);
     }
@@ -44,6 +44,11 @@ export default function ContactosTab({}: ContactosTabProps) {
   useEffect(() => {
     loadContactos();
   }, [loadContactos]);
+
+  // Resetear a página 1 cuando cambien los filtros
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter]);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     setUpdating(id);
@@ -62,7 +67,7 @@ export default function ContactosTab({}: ContactosTabProps) {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('¿Estás seguro de que quieres eliminar este contacto?')) return;
+    if (!confirm('¿Estás seguro de que quieres eliminar este lead?')) return;
 
     setUpdating(id);
     try {
@@ -119,7 +124,7 @@ export default function ContactosTab({}: ContactosTabProps) {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <input
               type="text"
-              placeholder="Buscar contactos..."
+              placeholder="Buscar leads..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -145,22 +150,22 @@ export default function ContactosTab({}: ContactosTabProps) {
           {/* Contador de resultados */}
           <div className="flex items-center justify-end">
             <span className="text-sm text-gray-500">
-              {contactos.length} de {total} contactos
+              {contactos.length} de {total} leads
             </span>
           </div>
         </div>
       </div>
 
-      {/* Lista de Contactos */}
+      {/* Lista de Leads */}
       <div className="bg-white shadow rounded-lg">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">Contactos</h3>
+          <h3 className="text-lg font-medium text-gray-900">Leads</h3>
         </div>
         <div className="px-6 py-4">
           {contactosLoading ? (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="text-gray-600 mt-2">Cargando contactos...</p>
+              <p className="text-gray-600 mt-2">Cargando leads...</p>
             </div>
           ) : contactosError ? (
             <div className="text-center py-12">
@@ -174,7 +179,7 @@ export default function ContactosTab({}: ContactosTabProps) {
             </div>
           ) : contactos.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600">No se encontraron contactos</p>
+              <p className="text-gray-600">No se encontraron leads</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -182,7 +187,7 @@ export default function ContactosTab({}: ContactosTabProps) {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Contacto
+                      Lead
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Información
@@ -250,7 +255,7 @@ export default function ContactosTab({}: ContactosTabProps) {
                             onClick={() => handleDelete(contacto.id)}
                             disabled={updating === contacto.id}
                             className="text-red-600 hover:text-red-900 disabled:opacity-50"
-                            title="Eliminar contacto"
+                            title="Eliminar lead"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -260,6 +265,64 @@ export default function ContactosTab({}: ContactosTabProps) {
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+
+          {/* Paginación */}
+          {!contactosLoading && !contactosError && contactos.length > 0 && (
+            <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-4">
+              <div className="flex flex-1 justify-between sm:hidden">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Anterior
+                </button>
+                <button
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                  disabled={currentPage * 15 >= total}
+                  className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Siguiente
+                </button>
+              </div>
+              <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm text-gray-700">
+                    Mostrando <span className="font-medium">{(currentPage - 1) * 15 + 1}</span> a{' '}
+                    <span className="font-medium">{Math.min(currentPage * 15, total)}</span> de{' '}
+                    <span className="font-medium">{total}</span> leads
+                  </p>
+                </div>
+                <div>
+                  <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                    <button
+                      onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                      disabled={currentPage === 1}
+                      className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <span className="sr-only">Anterior</span>
+                      <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                    <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300">
+                      Página {currentPage} de {Math.ceil(total / 15)}
+                    </span>
+                    <button
+                      onClick={() => setCurrentPage((prev) => prev + 1)}
+                      disabled={currentPage * 15 >= total}
+                      className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <span className="sr-only">Siguiente</span>
+                      <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </nav>
+                </div>
+              </div>
             </div>
           )}
         </div>

@@ -31,15 +31,15 @@ export interface UpdateStatusResponse {
 
 export async function getContactos(
   page: number = 1,
-  limit: number = 10,
+  limit: number = 15,
   search: string = '',
   status: string = 'all'
 ): Promise<ContactosResponse> {
   try {
+    // Query para obtener todos los leads que coincidan con los filtros
     let query = supabase
       .from('contactos')
-      .select('*', { count: 'exact' })
-      .order('created_at', { ascending: false });
+      .select('*', { count: 'exact' });
 
     // Aplicar filtro de búsqueda
     if (search) {
@@ -51,18 +51,28 @@ export async function getContactos(
       query = query.eq('status', status);
     }
 
-    // Aplicar paginación
-    const from = (page - 1) * limit;
-    const to = from + limit - 1;
-    query = query.range(from, to);
-
     const { data, error, count } = await query;
 
     if (error) throw error;
 
+    // Ordenamiento personalizado: primero pendientes (más nuevo→más viejo), luego el resto (más nuevo→más viejo)
+    const sortedData = (data || []).sort((a, b) => {
+      // Primero ordenar por prioridad de status (pendientes primero)
+      if (a.status === 'pending' && b.status !== 'pending') return -1;
+      if (a.status !== 'pending' && b.status === 'pending') return 1;
+      
+      // Dentro del mismo tipo de status, ordenar por fecha (más nuevo primero)
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
+
+    // Aplicar paginación manualmente después del ordenamiento
+    const from = (page - 1) * limit;
+    const to = from + limit;
+    const paginatedData = sortedData.slice(from, to);
+
     return {
       success: true,
-      data: data || [],
+      data: paginatedData,
       total: count || 0,
     };
   } catch (error) {
