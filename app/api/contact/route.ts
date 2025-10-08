@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { saveContact } from '../../../lib/contactService';
 import { checkRateLimit, getRateLimitInfo } from '../../../lib/rateLimiter';
+import { appendContactToSheet } from '../../../lib/googleSheetsService';
 
 export async function POST(request: NextRequest) {
   try {
@@ -62,16 +63,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Guardar en la base de datos
-    const result = await saveContact({
+    // Preparar datos del contacto
+    const contactData = {
       nombre: nombre.trim(),
       localidad: localidad.trim(),
       telefono: telefono.trim(),
-      email: email ? email.trim().toLowerCase() : null,
-      observaciones: observaciones ? observaciones.trim() : null,
+      email: email ? email.trim().toLowerCase() : '',
+      observaciones: observaciones ? observaciones.trim() : '',
+    };
+
+    // Guardar en la base de datos
+    const result = await saveContact({
+      ...contactData,
+      email: contactData.email || null,
+      observaciones: contactData.observaciones || null,
     });
 
     if (result.success) {
+      // También guardar en Google Sheets
+      try {
+        await appendContactToSheet(contactData);
+        console.log('✅ Contact saved to both DB and Google Sheets');
+      } catch (sheetError: any) {
+        console.error('❌ ERROR GOOGLE SHEETS:', sheetError);
+        console.error('❌ ERROR MESSAGE:', sheetError.message);
+        console.error('❌ ERROR STACK:', sheetError.stack);
+        // No bloqueamos la respuesta si falla Google Sheets
+      }
+
       return NextResponse.json({
         success: true,
         message: '¡Gracias! Nos pondremos en contacto contigo pronto.',

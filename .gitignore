@@ -42,3 +42,8 @@ scripts/config.sh
 # local env files
 .env*.local
 .env
+
+# Google Cloud credentials JSON files
+*-*.json
+medweb-*.json
+.env.vercel*
