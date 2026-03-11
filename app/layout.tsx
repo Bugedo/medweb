@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Roboto } from 'next/font/google';
+import IASdkWidget from './components/IASdkWidget';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700', '900'],
@@ -209,6 +210,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           <Image src="/images/whapp.png" alt="WhatsApp" width={60} height={60} priority />
         </a>
+
+        {/* Widget de IA */}
+        <IASdkWidget />
       </body>
     </html>
   );
