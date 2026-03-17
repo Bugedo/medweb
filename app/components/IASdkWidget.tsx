@@ -2,6 +2,17 @@
 
 import Script from 'next/script';
 
+declare global {
+  interface Window {
+    iaSdk?: {
+      init: (options: {
+        data: { pk: string };
+        config?: { style?: { zIndex?: number } };
+      }) => void;
+    };
+  }
+}
+
 export default function IASdkWidget() {
   const initializeSdk = () => {
     if (!window.iaSdk) return;
