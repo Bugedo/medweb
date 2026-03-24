@@ -11,9 +11,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  experimental: {
-    optimizePackageImports: ['@supabase/supabase-js'],
-  },
   // Mejoras para desarrollo más estable
   webpack: (config, { dev, isServer }) => {
     if (dev && !isServer) {

@@ -8,12 +8,15 @@ interface ContactData {
   telefono: string;
   email: string;
   observaciones: string;
+  afiliado: boolean;
 }
 
 interface ContactFormSectionProps {
   visibleElements: Set<string>;
   contactData: ContactData;
-  handleContactInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleContactInputChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   handleContactSubmit: (e: React.FormEvent) => void;
   isSubmitting: boolean;
   submitStatus: 'idle' | 'success' | 'error';
@@ -162,6 +165,22 @@ export default function ContactFormSection({
               style={{ color: '#0c369c' }}
               placeholder="Dejanos cualquier comentario o consulta adicional..."
             ></textarea>
+          </div>
+
+          <div className="mt-6">
+            <label className="inline-flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                id="afiliado"
+                name="afiliado"
+                checked={contactData.afiliado}
+                onChange={handleContactInputChange}
+                className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
+              />
+              <span className="text-sm font-medium" style={{ color: '#0c369c' }}>
+                Ya soy afiliado de Sancor Salud
+              </span>
+            </label>
           </div>
 
           {/* Status Message */}

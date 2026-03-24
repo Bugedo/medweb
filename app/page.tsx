@@ -17,6 +17,7 @@ interface ContactData {
   telefono: string;
   email: string;
   observaciones: string;
+  afiliado: boolean;
 }
 
 // Hook para animaciones de scroll
@@ -59,6 +60,7 @@ export default function LandingPage() {
     telefono: '',
     email: '',
     observaciones: '',
+    afiliado: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -69,9 +71,10 @@ export default function LandingPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
+    const checked = 'checked' in e.target ? e.target.checked : undefined;
     setContactData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: e.target instanceof HTMLInputElement && e.target.type === 'checkbox' ? checked : value,
     }));
   };
 
@@ -95,7 +98,7 @@ export default function LandingPage() {
 
     // Validar formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(contactData.email)) {
+    if (contactData.email.trim() && !emailRegex.test(contactData.email)) {
       setSubmitStatus('error');
       setSubmitMessage('Por favor ingresá un email válido.');
       setIsSubmitting(false);
@@ -114,6 +117,7 @@ export default function LandingPage() {
       const result = await response.json();
 
       if (response.ok) {
+        const shouldRedirectToSancor = contactData.afiliado;
         setSubmitStatus('success');
         setSubmitMessage(
           '¡Gracias por contactarnos! Un asesor se comunicará contigo a la brevedad.',
@@ -124,7 +128,17 @@ export default function LandingPage() {
           telefono: '',
           email: '',
           observaciones: '',
+          afiliado: false,
         });
+
+        if (shouldRedirectToSancor) {
+          const redirectConfirmed = window.confirm(
+            'Indicás que ya sos afiliado. Queres ir al sitio oficial de Sancor Salud?',
+          );
+          if (redirectConfirmed) {
+            window.location.href = 'https://www.sancorsalud.com.ar/';
+          }
+        }
       } else {
         setSubmitStatus('error');
         if (response.status === 429) {

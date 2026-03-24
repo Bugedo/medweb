@@ -11,9 +11,7 @@
     "dev:reset": "./scripts/dev.sh --clean",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "migrate": "./scripts/apply-migration.sh",
-    "db:connect": "psql \"postgresql://postgres.$PROJECT_REF:$DB_PASSWORD@aws-1-sa-east-1.pooler.supabase.com:6543/postgres\""
+    "lint": "next lint"
   },
   "repository": {
     "type": "git",
@@ -33,8 +31,6 @@
   },
   "homepage": "https://github.com/Bugedo/medweb#readme",
   "dependencies": {
-    "@supabase/ssr": "^0.7.0",
-    "@supabase/supabase-js": "^2.51.0",
     "dotenv": "^17.2.3",
     "googleapis": "^161.0.0",
     "lucide-react": "^0.544.0",

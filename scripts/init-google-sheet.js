@@ -13,13 +13,16 @@ async function initializeSheet() {
 
   try {
     // Validate environment variables
-    const serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+    const serviceAccountEmail =
+      process.env.GOOGLE_CLIENT_EMAIL || process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
     const privateKey = process.env.GOOGLE_PRIVATE_KEY;
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
     if (!serviceAccountEmail || !privateKey || !spreadsheetId) {
       console.error('❌ Missing required environment variables:');
-      if (!serviceAccountEmail) console.error('  - GOOGLE_SERVICE_ACCOUNT_EMAIL');
+      if (!serviceAccountEmail) {
+        console.error('  - GOOGLE_CLIENT_EMAIL (or GOOGLE_SERVICE_ACCOUNT_EMAIL)');
+      }
       if (!privateKey) console.error('  - GOOGLE_PRIVATE_KEY');
       if (!spreadsheetId) console.error('  - GOOGLE_SHEET_ID');
       process.exit(1);
@@ -55,7 +58,7 @@ async function initializeSheet() {
     // Check if sheet exists and has headers
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: `${firstSheet}!A1:F1`,
+      range: `${firstSheet}!A1:G1`,
     });
 
     if (response.data.values && response.data.values.length > 0) {
@@ -72,11 +75,12 @@ async function initializeSheet() {
         'Teléfono',
         'Email',
         'Observaciones',
+        'Afiliado',
       ];
 
       await sheets.spreadsheets.values.update({
         spreadsheetId,
-        range: `${firstSheet}!A1:F1`,
+        range: `${firstSheet}!A1:G1`,
         valueInputOption: 'USER_ENTERED',
         requestBody: {
           values: [headers],
@@ -128,7 +132,9 @@ async function initializeSheet() {
     console.error('\n❌ Error:', error.message);
     if (error.message.includes('permission')) {
       console.error('\n💡 Make sure you shared the sheet with:');
-      console.error(`   ${process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL}`);
+      console.error(
+        `   ${process.env.GOOGLE_CLIENT_EMAIL || process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL}`,
+      );
     }
     process.exit(1);
   }

@@ -8,6 +8,7 @@ interface ContactData {
   telefono: string;
   email: string;
   observaciones?: string;
+  afiliado: boolean;
 }
 
 /**
@@ -15,7 +16,7 @@ interface ContactData {
  */
 async function getGoogleSheetsClient() {
   try {
-    const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+    const clientEmail = process.env.GOOGLE_CLIENT_EMAIL || process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
     const privateKey = process.env.GOOGLE_PRIVATE_KEY;
 
     if (!clientEmail || !privateKey) {
@@ -61,6 +62,7 @@ export async function appendContactToSheet(contactData: ContactData): Promise<vo
       contactData.telefono,
       contactData.email,
       contactData.observaciones || '',
+      contactData.afiliado ? 'Si' : 'No',
     ];
 
     // Get the first sheet name dynamically
@@ -70,7 +72,7 @@ export async function appendContactToSheet(contactData: ContactData): Promise<vo
     // Append to the sheet
     await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: `${firstSheet}!A:F`,
+      range: `${firstSheet}!A:G`,
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [rowData],
@@ -80,8 +82,7 @@ export async function appendContactToSheet(contactData: ContactData): Promise<vo
     console.log('✅ [Google Sheets] Contact added successfully to', firstSheet);
   } catch (error: any) {
     console.error('❌ [Google Sheets] Error:', error.message);
-    // Don't throw error to avoid breaking the main flow
-    // Just log it so the contact is still saved to the database
+    throw error;
   }
 }
 
@@ -104,16 +105,24 @@ export async function initializeSheetHeaders(): Promise<void> {
     // Check if sheet has headers
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: `${firstSheet}!A1:F1`,
+      range: `${firstSheet}!A1:G1`,
     });
 
     // If first row is empty, add headers
     if (!response.data.values || response.data.values.length === 0) {
-      const headers = ['Fecha y Hora', 'Nombre', 'Localidad', 'Teléfono', 'Email', 'Observaciones'];
+      const headers = [
+        'Fecha y Hora',
+        'Nombre',
+        'Localidad',
+        'Teléfono',
+        'Email',
+        'Observaciones',
+        'Afiliado',
+      ];
 
       await sheets.spreadsheets.values.update({
         spreadsheetId,
-        range: `${firstSheet}!A1:F1`,
+        range: `${firstSheet}!A1:G1`,
         valueInputOption: 'USER_ENTERED',
         requestBody: {
           values: [headers],

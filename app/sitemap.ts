@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://prepagaargentina.com'
-  
+  const baseUrl = 'https://prepagaargentina.com';
+
   return [
     {
       url: baseUrl,
@@ -10,11 +10,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 1.0,
     },
-    {
-      url: `${baseUrl}/preficha`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-  ]
+  ];
 }
