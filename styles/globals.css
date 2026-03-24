@@ -707,6 +707,144 @@
   animation: cta-bounce 2s ease-in-out infinite;
 }
 
+/* Hero benefits aesthetic inspired by campaign pieces */
+.hero-benefits-panel {
+  background: linear-gradient(180deg, rgba(46, 35, 123, 0.26) 0%, rgba(40, 33, 117, 0.56) 56%, rgba(29, 27, 106, 0.82) 100%);
+  border-radius: 20px;
+  box-shadow: 0 18px 40px rgba(4, 10, 45, 0.35);
+  padding: 1.1rem 1.1rem 1.2rem;
+}
+
+.hero-segment-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: #ffffff;
+  background: linear-gradient(90deg, #05d5e8 0%, #7c3aed 100%);
+  padding: 0.4rem 0.8rem;
+}
+
+.hero-segment-inline {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-weight: 900;
+}
+
+.hero-segment-genw {
+  color: #2ce8f3;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.hero-segment-age {
+  color: #f6d65f;
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.hero-segment-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #9753d6;
+  border-radius: 14px;
+  padding: 0.28rem 0.7rem 0.32rem;
+}
+
+.hero-segment-genxt {
+  color: #8af4ff;
+  font-weight: 900;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.hero-segment-pill-age {
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.hero-crawl-viewport {
+  position: relative;
+  overflow: hidden;
+  height: 208px;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 82%, transparent 100%);
+}
+
+.hero-crawl-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  animation: hero-crawl 18s linear infinite;
+}
+
+.hero-crawl-item {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  color: #ffffff;
+  font-size: 1.12rem;
+  line-height: 1.35;
+  font-weight: 700;
+  margin-bottom: 0.52rem;
+  text-shadow: 0 2px 8px rgba(2, 7, 30, 0.35);
+}
+
+.hero-check-dot {
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.05rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #2ce8f3 0%, #1ec7de 100%);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+@keyframes hero-crawl {
+  0% {
+    transform: translateY(8%);
+  }
+  100% {
+    transform: translateY(-68%);
+  }
+}
+
+.hero-phone-row {
+  margin-top: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #ffffff;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 900;
+  text-shadow: 0 2px 8px rgba(2, 7, 30, 0.35);
+}
+
+.hero-whatsapp-dot {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: #22c55e;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
 /* Responsive para móviles */
 @media (max-width: 768px) {
   .whatsapp-float {
@@ -719,6 +857,61 @@
   .whatsapp-float img {
     width: 50px;
     height: 50px;
+  }
+
+  .hero-benefits-panel {
+    border-radius: 18px;
+    padding: 0.8rem 0.8rem 0.9rem;
+  }
+
+  .hero-segment-genw,
+  .hero-segment-age {
+    font-size: 1.35rem;
+  }
+
+  .hero-segment-genxt,
+  .hero-segment-pill-age {
+    font-size: 1.1rem;
+  }
+
+  .hero-segment-pill {
+    border-radius: 10px;
+    padding: 0.22rem 0.55rem 0.24rem;
+  }
+
+  .hero-segment-badge {
+    font-size: 0.95rem;
+    padding: 0.34rem 0.7rem;
+  }
+
+  .hero-crawl-viewport {
+    height: 138px;
+  }
+
+  .hero-crawl-list {
+    animation-duration: 20s;
+  }
+
+  .hero-crawl-item {
+    font-size: 0.92rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .hero-check-dot {
+    width: 1.08rem;
+    height: 1.08rem;
+    font-size: 0.72rem;
+  }
+
+  .hero-phone-row {
+    font-size: 1.55rem;
+    margin-top: 0.45rem;
+  }
+
+  .hero-whatsapp-dot {
+    width: 1.55rem;
+    height: 1.55rem;
+    font-size: 0.82rem;
   }
 }
 
