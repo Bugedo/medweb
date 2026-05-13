@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import { Metadata } from 'next';
+import Image from 'next/image';
 import { Roboto } from 'next/font/google';
-import IASdkWidget from './components/IASdkWidget';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700', '900'],
@@ -199,8 +199,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="page-background">
         {children}
 
-        {/* Widget de IA */}
-        <IASdkWidget />
+        {/* Botón flotante de WhatsApp */}
+        <a
+          href="https://wa.me/543513817823?text=Hola,%20me%20interesa%20conocer%20más%20sobre%20los%20planes%20de%20Sancor%20Salud"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="whatsapp-float animate-pulse"
+          aria-label="Contactar por WhatsApp"
+        >
+          <Image src="/images/whapp.png" alt="WhatsApp" width={60} height={60} priority />
+        </a>
       </body>
     </html>
   );
